@@ -1,0 +1,44 @@
+{
+  "name": "Recorded Future IOC Importer",
+  "id": "recorded_future_ioc",
+  "version": "1.0.0-beta",
+  "description": "This plugin is used to pull IOCs of type URL, Domain, IP and Hash from Recorded Future.",
+  "patch_supported": false,
+  "push_supported": false,
+  "configuration": [
+    {
+      "label": "API Key",
+      "key": "apikey",
+      "type": "text",
+      "mandatory": true,
+      "default": "",
+      "description": "Input the Recorded Future's ConnectAPI Key."
+    },
+    {
+      "label": "Risk List",
+      "key": "risklist",
+      "type": "multichoice",
+      "choices": [
+        {
+          "key": "domain",
+          "value": "domain"
+        },
+        {
+          "key": "hash",
+          "value": "hash"
+        },
+        {
+          "key": "ip",
+          "value": "ip"
+        },
+        {
+          "key": "url",
+          "value": "url"
+        }
+      ],
+      "mandatory": true,
+      "default": "",
+      "description": "Select the Risk List to import."
+    }
+  ]
+}
