@@ -58,7 +58,7 @@ from .utils.recorded_future_ioc_helper import (
 )
 
 
-class RecordedFutureIOC(PluginBase):
+class RecordedFutureIOCPlugin(PluginBase):
     """Recorded Future IOC Plugin class template implementation."""
 
     def __init__(
