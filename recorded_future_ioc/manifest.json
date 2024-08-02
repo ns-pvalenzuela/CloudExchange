@@ -17,7 +17,7 @@
     {
       "label": "Risk List",
       "key": "risklist",
-      "type": "multichoice",
+      "type": "choice",
       "choices": [
         {
           "key": "domain",
