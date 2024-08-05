@@ -15,8 +15,8 @@
       "description": "Input the Recorded Future's ConnectAPI Key."
     },
     {
-      "label": "Risk List",
-      "key": "risklist",
+      "label": "Risk Lists",
+      "key": "risklists",
       "type": "multichoice",
       "choices": [
         {

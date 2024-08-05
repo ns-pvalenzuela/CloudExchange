@@ -103,56 +103,59 @@ class RecordedFutureIOCPlugin(PluginBase):
         return PLATFORM_NAME, PLUGIN_VERSION
 
     def pull(self) -> List[Indicator]:
-        """Pull indicators from Web Page IOC Scraper Plugin."""
-        url = ("https://api.recordedfuture.com/v2/" +
-               self.configuration['risklist'] +
-               "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
+        """Pull indicators from Recorded Future IOC plugin."""
+        indicators = []
+        indicator_count = 0
+        for risklist in self.configuration['risklists']:
+            url = ("https://api.recordedfuture.com/v2/" +
+                   risklist +
+                   "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
 
-        try:
-            self.logger.info(f"{self.log_prefix}: Pulling IOC(s) from {url}.")
-            response = self.recorded_future_ioc_helper.api_helper(
-                url=url,
-                method="GET",
-                verify=self.ssl_validation,
-                proxies=self.proxy,
-                logger_msg="pulling IOC(s)",
-                headers={"X-RFToken": self.configuration['apikey'],
-                         "Content-Type": "application/json",
-                         "accept": "application/json"}
-            )
-            indicators, indicator_count = self.extract_indicators(
-                response, self.configuration['risklist']
-            )
+            try:
+                self.logger.info(f"{self.log_prefix}: Pulling IOC(s) from {url}.")
+                response = self.recorded_future_ioc_helper.api_helper(
+                    url=url,
+                    method="GET",
+                    verify=self.ssl_validation,
+                    proxies=self.proxy,
+                    logger_msg="pulling IOC(s)",
+                    headers={"X-RFToken": self.configuration['apikey'],
+                             "Content-Type": "application/json",
+                             "accept": "application/json"}
+                )
+                indicators, indicator_count = self.extract_indicators(
+                    response, risklist, indicators, indicator_count
+                )
 
-            self.logger.debug(
-                f"Pull Stat: {indicator_count} indicator(s) were fetched. "
-            )
-            self.logger.info(
-                f"{self.log_prefix}: Successfully fetched "
-                f"{indicator_count} IOC(s) "
-                f"from '{url}'."
-            )
+                self.logger.debug(
+                    f"Pull Stat: {indicator_count} indicator(s) were fetched. "
+                )
+                self.logger.info(
+                    f"{self.log_prefix}: Successfully fetched "
+                    f"{indicator_count} IOC(s) "
+                    f"from '{url}'."
+                )
 
-            return indicators
+                return indicators
 
-        except RecordedFutureIOCPluginException as exp:
-            err_msg = "Error occurred while pulling indicators."
-            self.logger.error(
-                message=(f"{self.log_prefix}: {err_msg} Error: {str(exp)}"),
-                details=str(traceback.format_exc()),
-            )
-            raise exp
-        except Exception as exp:
-            err_msg = "Error occurred while pulling indicators."
-            self.logger.error(
-                message=(
-                    f"{self.log_prefix}: {err_msg} Error: {str(exp)}"
-                ),
-                details=str(traceback.format_exc()),
-            )
-            raise exp
+            except RecordedFutureIOCPluginException as exp:
+                err_msg = "Error occurred while pulling indicators."
+                self.logger.error(
+                    message=(f"{self.log_prefix}: {err_msg} Error: {str(exp)}"),
+                    details=str(traceback.format_exc()),
+                )
+                raise exp
+            except Exception as exp:
+                err_msg = "Error occurred while pulling indicators."
+                self.logger.error(
+                    message=(
+                        f"{self.log_prefix}: {err_msg} Error: {str(exp)}"
+                    ),
+                    details=str(traceback.format_exc()),
+                )
+                raise exp
 
-    def extract_indicators(self, response, indicator_type) -> tuple[list, int]:
+    def extract_indicators(self, response, indicator_type, indicators, indicator_count) -> tuple[list, int]:
         """
         Extract indicators from a given response based on the specified indicator types.
 
@@ -164,8 +167,6 @@ class RecordedFutureIOCPlugin(PluginBase):
             Tuple[List[dict], int]: A tuple containing a list of extracted \
                                     indicators and the number of indicators.
         """
-        indicators = []
-        indicator_count = 0
         headers = True
 
         for line in response.splitlines():
