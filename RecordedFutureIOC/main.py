@@ -200,8 +200,12 @@ class RecordedFutureIOCPlugin(PluginBase):
                     continue
 
                 current_indicator_value=values[0][1:-1]
-                current_risk_score = int(values[-3][1:-1])
-                current_evidences=values[-1][1:-1]
+                if risklist == 'hash':
+                    current_risk_score = int(values[2][1:-1])
+                    current_evidences = values[4:][1:-1]
+                else:
+                    current_risk_score = int(values[1][1:-1])
+                    current_evidences = values[3:][1:-1]
                 if type(current_risk_score) is not int or current_risk_score == 0:
                     current_risk = SeverityType.UNKNOWN
                 elif current_risk_score <= 39:
