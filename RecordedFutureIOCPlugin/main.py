@@ -198,9 +198,9 @@ class RecordedFutureIOCPlugin(PluginBase):
                         )
                     )
                     continue
-
+                current_indicator_value=values[0][1:-1]
                 indicators.append(
-                    Indicator(value=values[0][1:-1], type=current_type)
+                    Indicator(value=current_indicator_value, type=current_type)
                 )
                 indicator_count += 1
             else:
