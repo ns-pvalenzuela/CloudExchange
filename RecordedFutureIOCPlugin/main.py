@@ -197,4 +197,4 @@ class RecordedFutureIOCPlugin(PluginBase):
             self.logger.error(f"{self.log_prefix}: {validation_err} {err_msg}")
             return ValidationResult(success=False, message=err_msg)
 
-        return self._validate_url(url)
+        return ValidationResult(success=True, message="Validation Successful for Recoded Future IOC plugin")
