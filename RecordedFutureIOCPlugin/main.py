@@ -112,7 +112,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                    "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
 
             try:
-                self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of risklist {risklist}.")
+                self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of {risklist} risklist.")
                 response = self.recorded_future_ioc_helper.api_helper(
                     url=url,
                     method="GET",
@@ -175,17 +175,28 @@ class RecordedFutureIOCPlugin(PluginBase):
                 values = line.split(",")
 
                 # convert risklist into netskope types.
-                if risklist is 'ip':
+                if risklist == 'ip':
                     current_type = IndicatorType.IPV4
-                elif risklist is 'hash':
-                    if values[1] is 'SHA-256':
+                elif risklist == 'hash':
+                    if values[1] == 'SHA-256':
                         current_type = IndicatorType.SHA256
-                    elif values[1] is 'MD5':
+                    elif values[1] == 'MD5':
                         current_type = IndicatorType.MD5
                     else:
                         continue
+                elif risklist == 'domain':
+                    current_type = getattr(
+                        IndicatorType, "DOMAIN", IndicatorType.URL
+                        )
+                elif risklist == 'url':
+                    current_type = IndicatorType.URL
                 else:
-                    current_type = risklist
+                    err_msg = "Error converting indicator type" + risklist
+                    self.logger.error(
+                        message=(
+                            f"{self.log_prefix}: {err_msg}"
+                        )
+                    )
 
                 indicators.append(
                     Indicator(value=values[0], type=current_type)
