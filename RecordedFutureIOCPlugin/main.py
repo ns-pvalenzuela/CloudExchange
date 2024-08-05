@@ -133,7 +133,6 @@ class RecordedFutureIOCPlugin(PluginBase):
                 self.logger.info(
                     f"{self.log_prefix}: Successfully fetched "
                     f"{indicator_count} IOC(s) "
-                    f"from '{url}'."
                     f"of type '{risklist}'"
                 )
 
@@ -168,13 +167,27 @@ class RecordedFutureIOCPlugin(PluginBase):
             Tuple[List[dict], int]: A tuple containing a list of extracted \
                                     indicators and the number of indicators.
         """
-        headers = True
 
+        headers = True
         for line in response.splitlines():
             if not headers:
                 values = line.split(",")
+
+                # convert risklist into netskope types.
+                if indicator_type is 'ip':
+                    current_type = 'ipv4'
+                elif indicator_type is 'hash':
+                    if values[1] is 'SHA-256':
+                        current_type = 'sha256'
+                    elif values[1] is 'MD5':
+                        current_type = 'md5'
+                    else:
+                        continue
+                else:
+                    current_type = indicator_type
+
                 indicators.append(
-                    Indicator(value=values[0], type=indicator_type)
+                    Indicator(value=values[0], type=current_type)
                 )
                 indicator_count += 1
             else:
