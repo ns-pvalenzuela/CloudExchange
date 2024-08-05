@@ -177,7 +177,10 @@ class RecordedFutureIOCPlugin(PluginBase):
 
                 # convert risklist into netskope types.
                 if risklist == 'ip':
-                    current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
+                    if ":" in values[0]:
+                        current_type = getattr(IndicatorType, "IPV6", IndicatorType.URL)
+                    else:
+                        current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
                 elif risklist == 'hash':
                     if values[1] == 'SHA-256':
                         current_type = IndicatorType.SHA256
