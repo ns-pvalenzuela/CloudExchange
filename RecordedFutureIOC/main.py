@@ -173,7 +173,7 @@ class RecordedFutureIOCPlugin(PluginBase):
 
         for line in response.splitlines():
             if not headers:
-                values = line.split(",")
+                values = line.split('","')
 
                 # convert risklist into netskope types.
                 if risklist == 'ip':
@@ -199,24 +199,13 @@ class RecordedFutureIOCPlugin(PluginBase):
                     )
                     continue
 
-                current_indicator_value=values[0][1:-1]
-                try:
-                    if risklist == 'hash':
-                        current_risk_score = int(values[2][1:-1])
-                        current_evidences = values[4:][1:-1]
-                    else:
-                        current_risk_score = int(values[1][1:-1])
-                        current_evidences = values[3:][1:-1]
-                except Exception as exp:
-                    err_msg = "Error converting Risk Score."
-                    self.logger.error(
-                        message=(
-                            f"{self.log_prefix}: {err_msg} Error in risk score: {values[1][1:-1]} IOC: {values[0][1:-1]}"
-                            ),
-                        details=str(traceback.format_exc()),
-                        )
-                    raise exp
-
+                current_indicator_value=values[0][1:]
+                if risklist == 'hash':
+                    current_risk_score = int(values[2])
+                    current_evidences = values[4:][:-1]
+                else:
+                    current_risk_score = int(values[1])
+                    current_evidences = values[3:][:-1]
                 current_evidences = ''.join(current_evidences)
                 if type(current_risk_score) is not int or current_risk_score == 0:
                     current_risk = SeverityType.UNKNOWN
