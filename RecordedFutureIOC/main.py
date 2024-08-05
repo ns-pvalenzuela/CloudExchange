@@ -223,7 +223,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                         value=current_indicator_value,
                         type=current_type,
                         severity=current_risk,
-                        comments=current_evidences
+                        comments=current_evidences.replace('"','')
                     )
                 )
                 indicator_count += 1
