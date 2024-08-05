@@ -124,7 +124,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                              "accept": "application/json"}
                 )
                 indicators, indicator_count = self.extract_indicators(
-                    response, risklist, indicators, indicator_count
+                    response, risklist, indicators
                 )
 
                 self.logger.debug(
@@ -155,7 +155,7 @@ class RecordedFutureIOCPlugin(PluginBase):
 
         return indicators
 
-    def extract_indicators(self, response, risklist, indicators, indicator_count) -> tuple[list, int]:
+    def extract_indicators(self, response, risklist, indicators) -> tuple[list, int]:
         """
         Extract indicators from a given response based on the specified indicator types.
 
@@ -167,8 +167,9 @@ class RecordedFutureIOCPlugin(PluginBase):
             Tuple[List[dict], int]: A tuple containing a list of extracted \
                                     indicators and the number of indicators.
         """
-
+        indicator_count = 0
         headers = True
+
         for line in response.splitlines():
             if not headers:
                 values = line.split(",")
