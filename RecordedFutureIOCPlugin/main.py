@@ -189,7 +189,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                 elif risklist == 'domain':
                     current_type = getattr(IndicatorType, "DOMAIN", IndicatorType.URL)
                 elif risklist == 'url':
-                    current_type = IndicatorType.URL
+                    current_type = IndicatorType.URLs
                 else:
                     err_msg = "Error converting indicator type" + risklist
                     self.logger.error(
