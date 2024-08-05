@@ -1,6 +1,6 @@
 {
   "name": "Recorded Future IOC",
-  "id": "RecordedFutureIOCPlugin",
+  "id": "recorded_future_ioc",
   "version": "1.0.0-beta",
   "description": "This plugin is used to pull IOCs of type URL, Domain, IP and Hash from Recorded Future.",
   "patch_supported": false,
