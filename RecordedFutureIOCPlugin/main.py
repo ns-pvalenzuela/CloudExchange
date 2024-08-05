@@ -31,7 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CTE Recorded Future IOC Plugin.
 """
-import re
 import traceback
 from typing import List
 
