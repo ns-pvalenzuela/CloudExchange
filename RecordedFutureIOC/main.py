@@ -179,9 +179,9 @@ class RecordedFutureIOCPlugin(PluginBase):
                 if risklist == 'ip':
                     current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
                 elif risklist == 'hash':
-                    if values[1][1:-1] == 'SHA-256':
+                    if values[1] == 'SHA-256':
                         current_type = IndicatorType.SHA256
-                    elif values[1][1:-1] == 'MD5':
+                    elif values[1] == 'MD5':
                         current_type = IndicatorType.MD5
                     else:
                         self.logger.debug(f"Hash type not found: {values[1]}")
