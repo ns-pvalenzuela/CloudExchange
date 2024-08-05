@@ -177,18 +177,17 @@ class RecordedFutureIOCPlugin(PluginBase):
 
                 # convert risklist into netskope types.
                 if risklist == 'ip':
-                    current_type = IndicatorType.IPV4
+                    current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
                 elif risklist == 'hash':
                     if values[1] == '"SHA-256"':
                         current_type = IndicatorType.SHA256
                     elif values[1] == '"MD5"':
                         current_type = IndicatorType.MD5
                     else:
+                        self.logger.info(f"Hash type not found: {values[1]}")
                         continue
                 elif risklist == 'domain':
-                    current_type = getattr(
-                        IndicatorType, "DOMAIN", IndicatorType.URL
-                        )
+                    current_type = getattr(IndicatorType, "DOMAIN", IndicatorType.URL)
                 elif risklist == 'url':
                     current_type = IndicatorType.URL
                 else:
