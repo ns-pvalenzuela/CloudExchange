@@ -121,9 +121,9 @@ class RecordedFutureIOCPlugin(PluginBase):
                 verify=self.ssl_validation,
                 proxies=self.proxy,
                 logger_msg="pulling IOC(s)",
-                headers={"X-RFToken": self.configuration['apikey'],
-                         "Content-Type": "application/json",
-                         "accept": "application/json"}
+                #headers={"X-RFToken": self.configuration['apikey'],
+                #         "Content-Type": "application/json",
+                #         "accept": "application/json"}
             )
             indicators, indicator_count = self.extract_indicators(
                 response, self.configuration['risklist']
