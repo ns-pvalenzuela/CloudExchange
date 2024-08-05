@@ -179,3 +179,22 @@ class RecordedFutureIOCPlugin(PluginBase):
                 headers = False
 
         return indicators, indicator_count
+
+    def validate(self, configuration) -> ValidationResult:
+        """Validate the Plugin configuration parameters.
+
+        Args:
+            configuration (dict): Dict object having all the Plugin
+            configuration parameters.
+        Returns:
+            cte.plugin_base.ValidationResult: ValidationResult object with
+            success flag and message.
+        """
+        apikey =  configuration.get("apikey", "")
+        validation_err = "Validation error occurred."
+        if not apikey:
+            err_msg = "API Key is a required configuration parameter."
+            self.logger.error(f"{self.log_prefix}: {validation_err} {err_msg}")
+            return ValidationResult(success=False, message=err_msg)
+
+        return self._validate_url(url)
