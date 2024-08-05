@@ -9,7 +9,7 @@
     {
       "label": "API Key",
       "key": "apikey",
-      "type": "text",
+      "type": "password",
       "mandatory": true,
       "default": "",
       "description": "Input the Recorded Future's ConnectAPI Key."
@@ -37,7 +37,12 @@
         }
       ],
       "mandatory": true,
-      "default": "['domain','hash','ip','url']",
+      "default": [
+        "domain",
+        "hash",
+        "ip",
+        "url"
+        ],
       "description": "Select the Risk List to import."
     }
   ]
