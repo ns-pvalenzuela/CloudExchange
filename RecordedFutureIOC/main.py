@@ -184,7 +184,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                     elif values[1][1:-1] == 'MD5':
                         current_type = IndicatorType.MD5
                     else:
-                        self.logger.info(f"Hash type not found: {values[1]}")
+                        self.logger.debug(f"Hash type not found: {values[1]}")
                         continue
                 elif risklist == 'domain':
                     current_type = getattr(IndicatorType, "DOMAIN", IndicatorType.URL)
