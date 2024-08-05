@@ -34,7 +34,7 @@ CTE Recorded Future IOC Plugin.
 import traceback
 from typing import List
 
-from netskope.integrations.cte.models import Indicator, IndicatorType
+from netskope.integrations.cte.models import Indicator, IndicatorType, SeverityType
 
 from netskope.integrations.cte.plugin_base import (
     PluginBase,
@@ -198,9 +198,28 @@ class RecordedFutureIOCPlugin(PluginBase):
                         )
                     )
                     continue
+
                 current_indicator_value=values[0][1:-1]
+                current_risk_score = int(values[-3][1:-1])
+                current_evidences=values[-1][1:-1]
+                if type(current_risk_score) is not int or current_risk_score == 0:
+                    current_risk = SeverityType.UNKNOWN
+                elif current_risk_score <= 39:
+                    current_risk = SeverityType.LOW
+                elif current_risk_score <= 69:
+                    current_risk = SeverityType.MEDIUM
+                elif current_risk_score <= 89:
+                    current_risk = SeverityType.HIGH
+                else:
+                    current_risk = SeverityType.CRITICAL
+
                 indicators.append(
-                    Indicator(value=current_indicator_value, type=current_type)
+                    Indicator(
+                        value=current_indicator_value,
+                        type=current_type,
+                        severity=current_risk,
+                        comments=current_evidences
+                    )
                 )
                 indicator_count += 1
             else:
