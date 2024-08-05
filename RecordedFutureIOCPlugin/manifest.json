@@ -17,7 +17,7 @@
     {
       "label": "Risk List",
       "key": "risklist",
-      "type": "choice",
+      "type": "multichoice",
       "choices": [
         {
           "key": "domain",
@@ -37,7 +37,7 @@
         }
       ],
       "mandatory": true,
-      "default": "",
+      "default": "['domain','hash','ip','url']",
       "description": "Select the Risk List to import."
     }
   ]
