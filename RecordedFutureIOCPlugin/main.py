@@ -112,7 +112,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                    "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
 
             try:
-                self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of {risklist} risklist.")
+                self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the {risklist} risklist.")
                 response = self.recorded_future_ioc_helper.api_helper(
                     url=url,
                     method="GET",
@@ -133,7 +133,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                 self.logger.info(
                     f"{self.log_prefix}: Successfully fetched "
                     f"{indicator_count} IOC(s) "
-                    f"of type '{risklist}'"
+                    f"from the {risklist} risklist'"
                 )
 
             except RecordedFutureIOCPluginException as exp:
@@ -178,9 +178,9 @@ class RecordedFutureIOCPlugin(PluginBase):
                 if risklist == 'ip':
                     current_type = IndicatorType.IPV4
                 elif risklist == 'hash':
-                    if values[1] == 'SHA-256':
+                    if values[1] == '"SHA-256"':
                         current_type = IndicatorType.SHA256
-                    elif values[1] == 'MD5':
+                    elif values[1] == '"MD5"':
                         current_type = IndicatorType.MD5
                     else:
                         continue
