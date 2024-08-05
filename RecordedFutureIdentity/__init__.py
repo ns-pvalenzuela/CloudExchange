@@ -1,1 +1,1 @@
-"""CrowdStrike Falcon Identity Protection URE Plugin Package."""
+"""CTE Recorded Future Identity Plugin."""
