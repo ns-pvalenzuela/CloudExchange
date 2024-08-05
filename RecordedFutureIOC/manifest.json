@@ -50,7 +50,7 @@
       "key": "fetchevidences",
       "type": "choice",
       "mandatory": true,
-      "default": "",
+      "default": "yes",
       "description": "Choose if you want to import all IOC evidences (can be a long text) into the comments field.",
       "choices": [
         {
