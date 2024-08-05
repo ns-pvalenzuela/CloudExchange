@@ -33,11 +33,7 @@ CTE Recorded Future IOC Plugin.
 """
 import re
 import traceback
-from ipaddress import IPv4Address, IPv6Address, ip_address
-from typing import Dict, List
-
-from urllib.parse import urlparse
-from pydantic import ValidationError
+from typing import List
 
 from netskope.integrations.cte.models import Indicator, IndicatorType
 
@@ -184,48 +180,3 @@ class RecordedFutureIOCPlugin(PluginBase):
                 headers = False
 
         return indicators, indicator_count
-
-    def _validate_url(self, url):
-        """
-        Validate the URL provided in configuration parameters.
-
-        Args:
-            url (str): The URL to validate.
-
-        Returns:
-            ValidationResult: The result of the validation.
-        """
-        try:
-            self.logger.debug(
-                f"{self.log_prefix}: Validating URL provided in configuration parameters."
-            )
-            self.recorded_future_ioc_helper.api_helper(
-                url=url,
-                method="GET",
-                verify=self.ssl_validation,
-                proxies=self.proxy,
-                logger_msg=f"verifying the connectivity with {url}.",
-                is_validation=True
-            )
-
-            validation_msg = f"Validation successful for {MODULE_NAME} {self.plugin_name} Plugin."
-            self.logger.debug(f"{self.log_prefix}: {validation_msg}")
-            return ValidationResult(
-                success=True,
-                message=validation_msg,
-            )
-        except RecordedFutureIOCPluginException as exp:
-            err_msg = f"Validation error occurred. Error: {exp}"
-            self.logger.error(
-                message=f"{self.log_prefix}: {err_msg}",
-                details=str(traceback.format_exc()),
-            )
-            return ValidationResult(success=False, message=str(exp))
-        except Exception as exp:
-            validation_err = "Validation error occurred."
-            err_msg = f"{validation_err} Check logs for more details."
-            self.logger.error(
-                message=f"{self.log_prefix}: {validation_err} Error: {exp}",
-                details=str(traceback.format_exc()),
-            )
-            return ValidationResult(success=False, message=err_msg)
