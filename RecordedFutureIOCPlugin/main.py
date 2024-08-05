@@ -106,7 +106,7 @@ class RecordedFutureIOCPlugin(PluginBase):
         """Pull indicators from Recorded Future IOC plugin."""
         indicators = []
         indicator_count = 0
-        for risklist in self.configuration['risklists']:
+        for risklist in self.configuration.get("risklists", ""):
             url = ("https://api.recordedfuture.com/v2/" +
                    risklist +
                    "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
@@ -134,9 +134,8 @@ class RecordedFutureIOCPlugin(PluginBase):
                     f"{self.log_prefix}: Successfully fetched "
                     f"{indicator_count} IOC(s) "
                     f"from '{url}'."
+                    f"of type '{risklist}'"
                 )
-
-                return indicators
 
             except RecordedFutureIOCPluginException as exp:
                 err_msg = "Error occurred while pulling indicators."
@@ -154,6 +153,8 @@ class RecordedFutureIOCPlugin(PluginBase):
                     details=str(traceback.format_exc()),
                 )
                 raise exp
+
+        return indicators
 
     def extract_indicators(self, response, indicator_type, indicators, indicator_count) -> tuple[list, int]:
         """
