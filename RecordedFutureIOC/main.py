@@ -211,7 +211,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                     err_msg = "Error converting Risk Score."
                     self.logger.error(
                         message=(
-                            f"{self.log_prefix}: {err_msg} Error in risk score: {values[1][1:-1]}"
+                            f"{self.log_prefix}: {err_msg} Error in risk score: {values[1][1:-1]} IOC: {values[0][1:-1]}"
                             ),
                         details=str(traceback.format_exc()),
                         )
