@@ -105,14 +105,15 @@ class RecordedFutureIOCPlugin(PluginBase):
     def pull(self) -> List[Indicator]:
         """Pull indicators from Recorded Future IOC plugin."""
         indicators = []
-        indicator_count = 0
-        for risklist in self.configuration.get("risklists", ""):
+        risklists = self.configuration.get("risklists", "")
+
+        self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the risklist(s) {risklists}")
+        for risklist in risklists:
             url = ("https://api.recordedfuture.com/v2/" +
                    risklist +
                    "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
 
             try:
-                self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the {risklist} risklist.")
                 response = self.recorded_future_ioc_helper.api_helper(
                     url=url,
                     method="GET",
