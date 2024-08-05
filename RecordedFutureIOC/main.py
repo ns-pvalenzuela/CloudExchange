@@ -206,7 +206,10 @@ class RecordedFutureIOCPlugin(PluginBase):
                 else:
                     current_risk_score = int(values[1])
                     current_evidences = values[3]
-                current_evidences = ''.join(current_evidences)
+                if self.configuration.get("fetchevidences", "") == "yes":
+                    current_evidences = ''.join(current_evidences)
+                else:
+                    current_evidences = ''
                 if type(current_risk_score) is not int or current_risk_score == 0:
                     current_risk = SeverityType.UNKNOWN
                 elif current_risk_score <= 39:
