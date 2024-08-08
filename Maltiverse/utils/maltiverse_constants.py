@@ -37,4 +37,3 @@ PLATFORM_NAME = "Maltiverse"
 PLUGIN_VERSION = "1.0.0"
 MAX_API_CALLS = 3
 DEFAULT_WAIT_TIME = 60
-BASE_URL = "https://api.maltiverse.com/"
