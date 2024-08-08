@@ -109,7 +109,7 @@ class MaltiverseIOCPlugin(PluginBase):
 
         self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the risklist(s) {risklists}")
         for risklist in risklists:
-            url = ("https://api.Maltiverse.com/v2/" +
+            url = ("https://api.maltiverse.com/" +
                    risklist +
                    "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
 
@@ -120,7 +120,7 @@ class MaltiverseIOCPlugin(PluginBase):
                     verify=self.ssl_validation,
                     proxies=self.proxy,
                     logger_msg="pulling IOC(s)",
-                    headers={"X-RFToken": self.configuration['apikey'],
+                    headers={"Authorization": "Bearer " + self.configuration['apikey'],
                              "Content-Type": "application/json",
                              "accept": "application/json"}
                 )
