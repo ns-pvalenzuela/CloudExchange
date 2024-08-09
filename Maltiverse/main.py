@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CTE Maltiverse Plugin.
 """
-import traceback
+import traceback, json
 from typing import List
 
 from netskope.integrations.cte.models import Indicator, IndicatorType, SeverityType
@@ -105,13 +105,13 @@ class MaltiverseIOCPlugin(PluginBase):
     def pull(self) -> List[Indicator]:
         """Pull indicators from Maltiverse IOC plugin."""
         indicators = []
-        risklists = self.configuration.get("risklists", "")
+        feedids = self.configuration.get("feedids", "")
 
-        self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the risklist(s) {risklists}")
-        for risklist in risklists:
-            url = ("https://api.maltiverse.com/" +
-                   risklist +
-                   "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
+        self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the feed(s) {feedids}")
+        for feed in feedids:
+            url = ("https://api.maltiverse.com/collection/" +
+                   feed +
+                   "/download")
 
             try:
                 response = self.maltiverse_ioc_helper.api_helper(
@@ -120,12 +120,12 @@ class MaltiverseIOCPlugin(PluginBase):
                     verify=self.ssl_validation,
                     proxies=self.proxy,
                     logger_msg="pulling IOC(s)",
-                    headers={"Authorization": "Bearer " + self.configuration['apikey'],
+                    headers={"Authorization": f"Bearer {self.configuration['apikey']}",
                              "Content-Type": "application/json",
                              "accept": "application/json"}
                 )
                 indicators, indicator_count = self.extract_indicators(
-                    response, risklist, indicators
+                    response, indicators
                 )
 
                 self.logger.debug(
@@ -134,7 +134,7 @@ class MaltiverseIOCPlugin(PluginBase):
                 self.logger.info(
                     f"{self.log_prefix}: Successfully fetched "
                     f"{indicator_count} IOC(s) "
-                    f"from the {risklist} risklist'"
+                    f"from the feed {feed}'"
                 )
 
             except MaltiverseIOCPluginException as exp:
@@ -156,7 +156,7 @@ class MaltiverseIOCPlugin(PluginBase):
 
         return indicators
 
-    def extract_indicators(self, response, risklist, indicators) -> tuple[list, int]:
+    def extract_indicators(self, response, indicators) -> tuple[list, int]:
         """
         Extract indicators from a given response based on the specified indicator types.
 
@@ -169,72 +169,49 @@ class MaltiverseIOCPlugin(PluginBase):
                                     indicators and the number of indicators.
         """
         indicator_count = 0
-        headers = True
 
-        for line in response.splitlines():
-            if not headers:
-                values = line.split('","')
+        json_response=json.loads(response)
+        for registry in json_response:
+            if registry['classification'] not in self.configuration.get("classifications", ""):
+                continue
 
-                # convert risklist into netskope types.
-                if risklist == 'ip':
-                    if ":" in values[0]:
-                        current_type = getattr(IndicatorType, "IPV6", IndicatorType.URL)
-                    else:
-                        current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
-                elif risklist == 'hash':
-                    if values[1] == 'SHA-256':
-                        current_type = IndicatorType.SHA256
-                    elif values[1] == 'MD5':
-                        current_type = IndicatorType.MD5
-                    else:
-                        self.logger.debug(f"Hash type not found: {values[1]}")
-                        continue
-                elif risklist == 'domain':
-                    current_type = getattr(IndicatorType, "DOMAIN", IndicatorType.URL)
-                elif risklist == 'url':
-                    current_type = IndicatorType.URL
-                else:
-                    err_msg = "Error converting indicator type" + risklist
-                    self.logger.error(
-                        message=(
-                            f"{self.log_prefix}: {err_msg}"
-                        )
-                    )
-                    continue
-
-                current_indicator_value=values[0][1:]
-                if risklist == 'hash':
-                    current_risk_score = int(values[2])
-                    current_evidences = values[4]
-                else:
-                    current_risk_score = int(values[1])
-                    current_evidences = values[3]
-                if self.configuration.get("fetchevidences", "") == "yes":
-                    current_evidences = ''.join(current_evidences)
-                else:
-                    current_evidences = ''
-                if type(current_risk_score) is not int or current_risk_score == 0:
-                    current_risk = SeverityType.UNKNOWN
-                elif current_risk_score <= 39:
-                    current_risk = SeverityType.LOW
-                elif current_risk_score <= 69:
-                    current_risk = SeverityType.MEDIUM
-                elif current_risk_score <= 89:
-                    current_risk = SeverityType.HIGH
-                else:
-                    current_risk = SeverityType.CRITICAL
-
-                indicators.append(
-                    Indicator(
-                        value=current_indicator_value,
-                        type=current_type,
-                        severity=current_risk,
-                        comments=current_evidences.replace('"','')
+            if registry['type'] == 'sample':
+                current_type = IndicatorType.SHA256
+                current_indicator_value = registry['sha256']
+            elif registry['type'] == 'ip':
+                current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
+                current_indicator_value = registry['ip']
+            elif registry['type'] == 'url':
+                current_type = IndicatorType.URL
+                current_indicator_value = registry['url']
+            elif registry['type'] == 'hostname':
+                current_type = getattr(IndicatorType, "DOMAIN", IndicatorType.URL)
+                current_indicator_value = registry['hostname']
+            else:
+                err_msg = "Error converting indicator type " + registry['type']
+                self.logger.error(
+                    message=(
+                        f"{self.log_prefix}: {err_msg}"
                     )
                 )
-                indicator_count += 1
+                continue
+            if registry['classification'] == 'malicious':
+                current_risk=SeverityType.CRITICAL
+            elif registry['classification'] == 'suspicious':
+                current_risk = SeverityType.MEDIUM
+            elif registry['classification'] == 'neutral':
+                current_risk = SeverityType.LOW
             else:
-                headers = False
+                current_risk = SeverityType.UNKNOWN
+
+            indicators.append(
+                Indicator(
+                    value=current_indicator_value,
+                    type=current_type,
+                    severity=current_risk
+                )
+            )
+            indicator_count += 1
 
         return indicators, indicator_count
 
@@ -255,4 +232,11 @@ class MaltiverseIOCPlugin(PluginBase):
             self.logger.error(f"{self.log_prefix}: {validation_err} {err_msg}")
             return ValidationResult(success=False, message=err_msg)
 
-        return ValidationResult(success=True, message="Validation Successful for Recoded Future IOC plugin")
+        feedids = configuration.get("otherfeeds", "")
+        customfeeds = configuration.get("feedids", "")
+        if not feedids and not customfeeds:
+            err_msg = "Either Standard or Custom Feedids are required."
+            self.logger.error(f"{self.log_prefix}: {validation_err} {err_msg}")
+            return ValidationResult(success=False, message=err_msg)
+
+        return ValidationResult(success=True, message="Validation Successful for Maltiverse plugin")
