@@ -1,1 +1,1 @@
-"""CTE Recorded Future IOC Plugin."""
+"""CTE Maltiverse Plugin."""
