@@ -40,7 +40,7 @@ from typing import Dict, Union
 import requests
 from netskope.common.utils import add_user_agent
 
-from .maltiverse_ioc_constants import (
+from .maltiverse_constants import (
     DEFAULT_WAIT_TIME,
     MAX_API_CALLS,
     MODULE_NAME,
