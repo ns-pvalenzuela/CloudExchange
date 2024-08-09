@@ -114,7 +114,9 @@ class MaltiversePlugin(PluginBase):
             url = ("https://api.maltiverse.com/collection/" +
                    feed +
                    "/download")
-
+            self.logger.info(
+                f"{self.log_prefix}: URL {url}"
+            )
             try:
                 response = self.maltiverse_helper.api_helper(
                     url=url,
