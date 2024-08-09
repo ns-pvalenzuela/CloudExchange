@@ -248,7 +248,7 @@ class RecordedFutureIOCPlugin(PluginBase):
             cte.plugin_base.ValidationResult: ValidationResult object with
             success flag and message.
         """
-        apikey =  configuration.get("apikey", "")
+        apikey = configuration.get("apikey", "")
         validation_err = "Validation error occurred."
         if not apikey:
             err_msg = "API Key is a required configuration parameter."
