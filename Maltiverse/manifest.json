@@ -44,64 +44,64 @@
       "type": "multichoice",
       "choices": [
           {
-              "key": "VdhZV34B4jHUXfKt_gDi",
-              "value": "Command and Controls"
+              "value": "VdhZV34B4jHUXfKt_gDi",
+              "key": "Command and Controls"
           },
           {
-              "key": "ZtjCV34B4jHUXfKtjWdD",
-              "value": "Malware Distribution"
+              "value": "ZtjCV34B4jHUXfKtjWdD",
+              "key": "Malware Distribution"
           },
           {
               "key": "Ryjs1n0BGb1u75L8KpjZ",
               "value": "TOR Nodes"
           },
           {
-              "key": "uYxZknEB8jmkCY9eQoUJ",
-              "value": "Malicious IP"
+              "value": "uYxZknEB8jmkCY9eQoUJ",
+              "key": "Malicious IP"
           },
           {
-              "key": "RbSs1YUBYAdeK0KL3rUf",
-              "value": "Advanced Persistent Threats"
+              "value": "RbSs1YUBYAdeK0KL3rUf",
+              "key": "Advanced Persistent Threats"
           },
           {
-              "key": "kskDSoEB4jHUXfKtb4IZ",
-              "value": "S0367 - Emotet"
+              "value": "kskDSoEB4jHUXfKtb4IZ",
+              "key": "S0367 - Emotet"
           },
           {
-              "key": "EIAO4HAB8jmkCY9e8HoL",
-              "value": "T1566 - Phishing"
+              "value": "EIAO4HAB8jmkCY9e8HoL",
+              "key": "T1566 - Phishing"
           },
           {
-              "key": "WZ0XJHIB8jmkCY9eLpr0",
-              "value": "Malware"
+              "value": "WZ0XJHIB8jmkCY9eLpr0",
+              "key": "Malware"
           },
           {
-              "key": "xXPAOoUBqd_8q-E2ZH4Z",
-              "value": "S0154 - Cobalt Strike"
+              "value": "xXPAOoUBqd_8q-E2ZH4Z",
+              "key": "S0154 - Cobalt Strike"
           },
           {
-              "key": "04xeknEB8jmkCY9eOoUv",
-              "value": "Cybercrime"
+              "value": "04xeknEB8jmkCY9eOoUv",
+              "key": "Cybercrime"
           },
           {
-              "key": "H4yrknEB8jmkCY9eb4aN",
-              "value": "Malicious URL"
+              "value": "H4yrknEB8jmkCY9eb4aN",
+              "key": "Malicious URL"
           },
           {
-              "key": "QthpV34B4jHUXfKtOw--",
-              "value": "Known Attackers"
+              "value": "QthpV34B4jHUXfKtOw--",
+              "key": "Known Attackers"
           },
           {
-              "key": "xKWKangBN4Q8MD8oRYd-",
-              "value": "Malicious Hostvalues"
+              "value": "xKWKangBN4Q8MD8oRYd-",
+              "key": "Malicious Hostvalues"
           },
           {
-              "key": "3DyIvYAB4jHUXfKt9SQL",
-              "value": "IoT"
+              "value": "3DyIvYAB4jHUXfKt9SQL",
+              "key": "IoT"
           },
           {
-              "key": "VFveEXsBGb1u75L8tCaY",
-              "value": "Industrial Control Systems"
+              "value": "VFveEXsBGb1u75L8tCaY",
+              "key": "Industrial Control Systems"
           }
       ],
       "mandatory": false,
