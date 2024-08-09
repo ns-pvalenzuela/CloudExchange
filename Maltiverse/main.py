@@ -106,9 +106,11 @@ class MaltiverseIOCPlugin(PluginBase):
         """Pull indicators from Maltiverse IOC plugin."""
         indicators = []
         feedids = self.configuration.get("feedids", "")
+        otherfeeds = self.configuration.get("otherfeeds", "")
+        feeds = feedids + otherfeeds.split(',')
 
         self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the feed(s) {feedids}")
-        for feed in feedids:
+        for feed in feeds:
             url = ("https://api.maltiverse.com/collection/" +
                    feed +
                    "/download")
