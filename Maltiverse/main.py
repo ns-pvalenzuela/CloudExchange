@@ -48,13 +48,13 @@ from .utils.maltiverse_constants import (
 )
 
 from .utils.maltiverse_helper import (
-    MaltiverseIOCPluginException,
-    MaltiverseIOCPluginHelper
+    MaltiversePluginException,
+    MaltiversePluginHelper
 )
 
 
-class MaltiverseIOCPlugin(PluginBase):
-    """Maltiverse IOC Plugin class template implementation."""
+class MaltiversePlugin(PluginBase):
+    """Maltiverse Plugin class template implementation."""
 
     def __init__(
         self,
@@ -72,7 +72,7 @@ class MaltiverseIOCPlugin(PluginBase):
         self.log_prefix = f"{MODULE_NAME} {self.plugin_name}"
         if name:
             self.log_prefix = f"{self.log_prefix} [{name}]"
-        self.maltiverse_helper = MaltiverseIOCPluginHelper(
+        self.maltiverse_helper = MaltiversePluginHelper(
             logger=self.logger,
             log_prefix=self.log_prefix,
             plugin_name=self.plugin_name,
@@ -86,7 +86,7 @@ class MaltiverseIOCPlugin(PluginBase):
             tuple: Tuple of plugin's name and version fetched from metadata.
         """
         try:
-            metadata_json = MaltiverseIOCPlugin.metadata
+            metadata_json = MaltiversePlugin.metadata
             plugin_name = metadata_json.get("name", PLATFORM_NAME)
             plugin_version = metadata_json.get("version", PLUGIN_VERSION)
             return plugin_name, plugin_version
@@ -103,7 +103,7 @@ class MaltiverseIOCPlugin(PluginBase):
         return PLATFORM_NAME, PLUGIN_VERSION
 
     def pull(self) -> List[Indicator]:
-        """Pull indicators from Maltiverse IOC plugin."""
+        """Pull indicators from Maltiverse plugin."""
         indicators = []
         feedids = self.configuration.get("feedids", "")
         otherfeeds = self.configuration.get("otherfeeds", "")
@@ -139,7 +139,7 @@ class MaltiverseIOCPlugin(PluginBase):
                     f"from the feed {feed}'"
                 )
 
-            except MaltiverseIOCPluginException as exp:
+            except MaltiversePluginException as exp:
                 err_msg = "Error occurred while pulling indicators."
                 self.logger.error(
                     message=(f"{self.log_prefix}: {err_msg} Error: {str(exp)}"),

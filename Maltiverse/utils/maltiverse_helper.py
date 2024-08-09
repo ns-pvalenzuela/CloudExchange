@@ -48,14 +48,14 @@ from .maltiverse_constants import (
 )
 
 
-class MaltiverseIOCPluginException(Exception):
-    """MaltiverseIOC plugin custom exception class."""
+class MaltiversePluginException(Exception):
+    """Maltiverse plugin custom exception class."""
 
     pass
 
 
-class MaltiverseIOCPluginHelper(object):
-    """MaltiverseIOCPluginHelper class.
+class MaltiversePluginHelper(object):
+    """MaltiversePluginHelper class.
 
     Args:
         object (object): Object class.
@@ -181,7 +181,7 @@ class MaltiverseIOCPluginHelper(object):
                             message=f"{self.log_prefix}: {err_msg}",
                             details=err_msg,
                         )
-                        raise MaltiverseIOCPluginException(err_msg)
+                        raise MaltiversePluginException(err_msg)
                     retry_after = int(response.headers.get("Retry-After", 60))
                     retry_after = int(retry_after)
                     if retry_after > 300:
@@ -194,7 +194,7 @@ class MaltiverseIOCPluginHelper(object):
                         self.logger.error(
                             message=f"{self.log_prefix}: {err_msg}"
                         )
-                        raise MaltiverseIOCPluginException(err_msg)
+                        raise MaltiversePluginException(err_msg)
                     self.logger.error(
                         message=(
                             f"{self.log_prefix}: Received exit code 429, API rate limit"
@@ -215,7 +215,7 @@ class MaltiverseIOCPluginHelper(object):
                             message=f"{self.log_prefix}: {err_msg}",
                             details=err_msg,
                         )
-                        raise MaltiverseIOCPluginException(err_msg)
+                        raise MaltiversePluginException(err_msg)
 
                     self.logger.error(
                         message=(
@@ -234,7 +234,7 @@ class MaltiverseIOCPluginHelper(object):
                         if is_handle_error_required
                         else response
                     )
-        except MaltiverseIOCPluginException:
+        except MaltiversePluginException:
             raise
         except requests.exceptions.ProxyError as error:
             err_msg = (
@@ -251,7 +251,7 @@ class MaltiverseIOCPluginHelper(object):
                 message=f"{self.log_prefix}: {err_msg} Error: {error}",
                 details=traceback.format_exc(),
             )
-            raise MaltiverseIOCPluginException(err_msg)
+            raise MaltiversePluginException(err_msg)
         except requests.exceptions.ConnectionError as error:
             err_msg = (
                 f"Unable to establish connection with {PLATFORM_NAME} "
@@ -269,7 +269,7 @@ class MaltiverseIOCPluginHelper(object):
                 message=f"{self.log_prefix}: {err_msg} Error: {error}",
                 details=traceback.format_exc(),
             )
-            raise MaltiverseIOCPluginException(err_msg)
+            raise MaltiversePluginException(err_msg)
         except requests.HTTPError as err:
             err_msg = f"HTTP error occurred while {logger_msg}."
             if is_validation:
@@ -281,7 +281,7 @@ class MaltiverseIOCPluginHelper(object):
                 message=f"{self.log_prefix}: {err_msg} Error: {err}",
                 details=traceback.format_exc(),
             )
-            raise MaltiverseIOCPluginException(err_msg)
+            raise MaltiversePluginException(err_msg)
         except Exception as exp:
             err_msg = f"Unexpected error occurred while {logger_msg}."
             if is_validation:
@@ -293,14 +293,14 @@ class MaltiverseIOCPluginHelper(object):
                     message=f"{self.log_prefix}: {err_msg} Error: {exp}",
                     details=traceback.format_exc(),
                 )
-                raise MaltiverseIOCPluginException(
+                raise MaltiversePluginException(
                     f"{err_msg} Check logs for more details."
                 )
             self.logger.error(
                 message=f"{self.log_prefix}: {err_msg} Error: {exp}",
                 details=traceback.format_exc(),
             )
-            raise MaltiverseIOCPluginException(err_msg)
+            raise MaltiversePluginException(err_msg)
 
     def handle_error(
         self,
@@ -356,14 +356,14 @@ class MaltiverseIOCPluginHelper(object):
                     message=f"{self.log_prefix}: {log_err_msg}",
                     details=f"API response: {resp.text}",
                 )
-                raise MaltiverseIOCPluginException(err_msg)
+                raise MaltiversePluginException(err_msg)
             else:
                 err_msg = err_msg + " while " + logger_msg + "."
                 self.logger.error(
                     message=f"{self.log_prefix}: {err_msg}",
                     details=f"API response: {resp.text}",
                 )
-                raise MaltiverseIOCPluginException(err_msg)
+                raise MaltiversePluginException(err_msg)
 
         else:
             err_msg = (
@@ -378,4 +378,4 @@ class MaltiverseIOCPluginHelper(object):
                 ),
                 details=f"API response: {resp.text}",
             )
-            raise MaltiverseIOCPluginException(err_msg)
+            raise MaltiversePluginException(err_msg)
