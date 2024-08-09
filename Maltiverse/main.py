@@ -108,7 +108,9 @@ class MaltiversePlugin(PluginBase):
         feedids = self.configuration.get("feedids", "value")
         otherfeeds = self.configuration.get("otherfeeds", "")
         feeds = feedids + otherfeeds.split(',')
-
+        self.logger.info(
+            f"{self.log_prefix}: feeds: {feeds}"
+        )
         for feed in feeds:
             if not feed:
                 continue
