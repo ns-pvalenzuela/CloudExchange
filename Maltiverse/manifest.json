@@ -13,6 +13,114 @@
       "mandatory": true,
       "default": "",
       "description": "Input the Maltiverse API Key."
+    },
+    {
+      "label": "Classifications",
+      "key": "classifications",
+      "type": "multichoice",
+      "choices": [
+        {
+          "key": "malicious",
+          "value": "Malicious"
+        },
+        {
+          "key": "suspicious",
+          "value": "Suspicious"
+        },
+        {
+          "key": "neutral",
+          "value": "Neutral"
+        }
+      ],
+      "mandatory": true,
+      "default": [
+        "Malicious"
+        ],
+      "description": "Which classifications to import."
+    },
+    {
+      "label": "Feeds",
+      "key": "feedids",
+      "type": "multichoice",
+      "choices": [
+          {
+              "key": "VdhZV34B4jHUXfKt_gDi",
+              "value": "Command and Controls"
+          },
+          {
+              "key": "ZtjCV34B4jHUXfKtjWdD",
+              "value": "Malware Distribution"
+          },
+          {
+              "key": "Ryjs1n0BGb1u75L8KpjZ",
+              "value": "TOR Nodes"
+          },
+          {
+              "key": "uYxZknEB8jmkCY9eQoUJ",
+              "value": "Malicious IP"
+          },
+          {
+              "key": "RbSs1YUBYAdeK0KL3rUf",
+              "value": "Advanced Persistent Threats"
+          },
+          {
+              "key": "kskDSoEB4jHUXfKtb4IZ",
+              "value": "S0367 - Emotet"
+          },
+          {
+              "key": "EIAO4HAB8jmkCY9e8HoL",
+              "value": "T1566 - Phishing"
+          },
+          {
+              "key": "WZ0XJHIB8jmkCY9eLpr0",
+              "value": "Malware"
+          },
+          {
+              "key": "xXPAOoUBqd_8q-E2ZH4Z",
+              "value": "S0154 - Cobalt Strike"
+          },
+          {
+              "key": "04xeknEB8jmkCY9eOoUv",
+              "value": "Cybercrime"
+          },
+          {
+              "key": "H4yrknEB8jmkCY9eb4aN",
+              "value": "Malicious URL"
+          },
+          {
+              "key": "QthpV34B4jHUXfKtOw--",
+              "value": "Known Attackers"
+          },
+          {
+              "key": "xKWKangBN4Q8MD8oRYd-",
+              "value": "Malicious Hostvalues"
+          },
+          {
+              "key": "3DyIvYAB4jHUXfKt9SQL",
+              "value": "IoT"
+          },
+          {
+              "key": "VFveEXsBGb1u75L8tCaY",
+              "value": "Industrial Control Systems"
+          }
+      ],
+      "mandatory": false,
+      "default": [
+        "Command and Control",
+        "Phishing",
+        "Malware Distribution",
+        "Cybercrime",
+        "Malicious URL"
+        ],
+      "description": "Select the Feeds to import."
+    },
+    {
+      "label": "Other Feeds",
+      "key": "otherfeeds",
+      "type": "text",
+      "mandatory": false,
+      "default": "",
+      "description": "Comma Separated list of other feeds ids to import."
     }
   ]
 }
