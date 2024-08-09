@@ -41,7 +41,7 @@ from netskope.integrations.cte.plugin_base import (
     ValidationResult,
 )
 
-from .utils.maltiverse_ioc_constants import (
+from .utils.maltiverse_constants import (
     MODULE_NAME,
     PLATFORM_NAME,
     PLUGIN_VERSION,
