@@ -47,7 +47,7 @@ from .utils.maltiverse_constants import (
     PLUGIN_VERSION,
 )
 
-from .utils.maltiverse_ioc_helper import (
+from .utils.maltiverse_helper import (
     MaltiverseIOCPluginException,
     MaltiverseIOCPluginHelper
 )
@@ -72,7 +72,7 @@ class MaltiverseIOCPlugin(PluginBase):
         self.log_prefix = f"{MODULE_NAME} {self.plugin_name}"
         if name:
             self.log_prefix = f"{self.log_prefix} [{name}]"
-        self.maltiverse_ioc_helper = MaltiverseIOCPluginHelper(
+        self.maltiverse_helper = MaltiverseIOCPluginHelper(
             logger=self.logger,
             log_prefix=self.log_prefix,
             plugin_name=self.plugin_name,
@@ -116,7 +116,7 @@ class MaltiverseIOCPlugin(PluginBase):
                    "/download")
 
             try:
-                response = self.maltiverse_ioc_helper.api_helper(
+                response = self.maltiverse_helper.api_helper(
                     url=url,
                     method="GET",
                     verify=self.ssl_validation,
