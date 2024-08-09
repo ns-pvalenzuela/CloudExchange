@@ -110,6 +110,8 @@ class MaltiversePlugin(PluginBase):
         feeds = feedids + otherfeeds.split(',')
 
         for feed in feeds:
+            if not feed:
+                continue
             url = ("https://api.maltiverse.com/collection/" +
                    feed +
                    "/download")
@@ -123,9 +125,9 @@ class MaltiversePlugin(PluginBase):
                     verify=self.ssl_validation,
                     proxies=self.proxy,
                     logger_msg="pulling IOC(s)",
-                    headers={"Authorization": f"Bearer {self.configuration['apikey']}",
-                             "Content-Type": "application/json",
-                             "accept": "application/json"}
+                    headers={"accept": "application/json",
+                             "Authorization": f"Bearer {self.configuration['apikey']}"
+                             }
                 )
                 indicators, indicator_count = self.extract_indicators(
                     response, indicators
@@ -137,7 +139,7 @@ class MaltiversePlugin(PluginBase):
                 self.logger.info(
                     f"{self.log_prefix}: Successfully fetched "
                     f"{indicator_count} IOC(s) "
-                    f"from the feed {feed}'"
+                    f"from the feed {feed}"
                 )
 
             except MaltiversePluginException as exp:
