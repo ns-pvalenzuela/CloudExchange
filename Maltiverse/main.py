@@ -113,7 +113,7 @@ class MaltiversePlugin(PluginBase):
             feeds = map(str.strip, feeds)
 
         self.logger.debug(
-            f"{self.log_prefix}: feeds: {feeds}"
+            f"{self.log_prefix}: feeds: {feeds.join('')}"
         )
 
         for feed in feeds:
