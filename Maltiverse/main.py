@@ -105,9 +105,12 @@ class MaltiversePlugin(PluginBase):
     def pull(self) -> List[Indicator]:
         """Pull indicators from Maltiverse plugin."""
         indicators = []
-        feedids = self.configuration.get("feedids", "value")
-        otherfeeds = self.configuration.get("otherfeeds", "")
-        feeds = feedids + otherfeeds.split(',')
+        if self.configuration.get("feedids", "value"):
+            feeds = self.configuration.get("feedids", "value")
+        if self.configuration.get("otherfeeds", ""):
+            otherfeeds = self.configuration.get("otherfeeds", "")
+            feeds += otherfeeds.split(',')
+
         self.logger.info(
             f"{self.log_prefix}: feeds: {feeds}"
         )
