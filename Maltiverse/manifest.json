@@ -20,16 +20,16 @@
       "type": "multichoice",
       "choices": [
         {
-          "key": "malicious",
-          "value": "Malicious"
+          "value": "malicious",
+          "key": "Malicious"
         },
         {
-          "key": "suspicious",
-          "value": "Suspicious"
+          "value": "suspicious",
+          "key": "Suspicious"
         },
         {
-          "key": "neutral",
-          "value": "Neutral"
+          "value": "neutral",
+          "key": "Neutral"
         }
       ],
       "mandatory": true,
