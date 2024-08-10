@@ -108,7 +108,7 @@ class MaltiversePlugin(PluginBase):
         if self.configuration.get("feedids", "value"):
             feeds = self.configuration.get("feedids", "value")
         if self.configuration.get("otherfeeds", ""):
-            otherfeeds =  map(str.stip,self.configuration.get("otherfeeds", ""))
+            otherfeeds =  map(str.strip,self.configuration.get("otherfeeds", ""))
             feeds += otherfeeds.split(',')
 
         self.logger.debug(
