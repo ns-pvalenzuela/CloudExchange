@@ -109,7 +109,7 @@ class MaltiversePlugin(PluginBase):
             feeds = self.configuration.get("feedids", "value")
         if self.configuration.get("otherfeeds", ""):
             otherfeeds =  self.configuration.get("otherfeeds", "")
-            if feeds:
+            if 'feeds' in locals():
                 feeds += otherfeeds.split(',')
             else:
                 feeds = otherfeeds.split(',')
