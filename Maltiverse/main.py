@@ -115,10 +115,6 @@ class MaltiversePlugin(PluginBase):
                 feeds = otherfeeds.split(',')
             feeds = map(str.strip, feeds)
 
-        self.logger.debug(
-            f"{self.log_prefix}: feeds: {feeds.join('')}"
-        )
-
         for feed in feeds:
             if not feed:
                 continue
