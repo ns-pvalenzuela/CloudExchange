@@ -120,9 +120,7 @@ class MaltiversePlugin(PluginBase):
             url = ("https://api.maltiverse.com/collection/" +
                    feed +
                    "/download")
-            self.logger.info(
-                f"{self.log_prefix}: URL {url}"
-            )
+
             try:
                 response = self.maltiverse_helper.api_helper(
                     url=url,
@@ -194,8 +192,11 @@ class MaltiversePlugin(PluginBase):
                 current_type = IndicatorType.SHA256
                 current_indicator_value = registry['sha256']
             elif registry['type'] == 'ip':
-                current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
-                current_indicator_value = registry['ip']
+                current_indicator_value = registry['ip_addr']
+                if ':' in current_indicator_value:
+                    current_type = getattr(IndicatorType, "IPV6", IndicatorType.URL)
+                else:
+                    current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
             elif registry['type'] == 'url':
                 current_type = IndicatorType.URL
                 current_indicator_value = registry['url']
