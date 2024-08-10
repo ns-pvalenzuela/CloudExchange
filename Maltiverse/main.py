@@ -162,7 +162,7 @@ class MaltiversePlugin(PluginBase):
                 )
                 raise exp
 
-        return indicators
+        return list(set(indicators))
 
     def extract_indicators(self, response, indicators) -> tuple[list, int]:
         """
@@ -170,7 +170,7 @@ class MaltiversePlugin(PluginBase):
 
         Args:
             response (str): The response from which to extract indicators.
-            indicator_type (string): the type of IOC fetching
+            indicators (list): current indicator list
 
         Returns:
             Tuple[List[dict], int]: A tuple containing a list of extracted \
