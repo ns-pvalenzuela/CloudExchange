@@ -183,6 +183,9 @@ class MaltiversePlugin(PluginBase):
         json_response=json.loads(response)
         for registry in json_response:
             if registry['classification'] not in self.configuration.get("classifications", ""):
+                self.logger.debug(
+                    f"Skipping: {registry['classification']}. "
+                )
                 continue
 
             if registry['type'] == 'sample':
