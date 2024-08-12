@@ -177,7 +177,7 @@ class MaltiversePlugin(PluginBase):
             indicators (set): current indicator list
 
         Returns:
-            Tuple[List[dict], int]: A tuple containing a list of extracted \
+            Tuple[set[dict], int]: A tuple containing a set of extracted \
                                     indicators and the number of indicators.
         """
         indicator_count = 0
