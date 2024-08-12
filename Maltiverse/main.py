@@ -190,7 +190,7 @@ class MaltiversePlugin(PluginBase):
                     f"Skipping: {registry['classification']}. "
                     f"List: {classlist}"
                 )
-                break
+                continue
 
             if registry['type'] == 'sample':
                 current_type = IndicatorType.SHA256
