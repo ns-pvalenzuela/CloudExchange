@@ -220,16 +220,22 @@ class MaltiversePlugin(PluginBase):
             else:
                 current_risk = SeverityType.UNKNOWN
 
-            indicators.append(
-                Indicator(
+            current_indicator = Indicator(
                     value=current_indicator_value,
                     type=current_type,
                     severity=current_risk
                 )
-            )
+            if current_indicator not in indicators:
+                indicators.append(current_indicator)
+            #indicators.append(
+            #    Indicator(
+            #        value=current_indicator_value,
+            #        type=current_type,
+            #        severity=current_risk
+            #    )
+            #)
             indicator_count += 1
 
-        indicators = list(set(indicators))
         return indicators, indicator_count
 
     def validate(self, configuration) -> ValidationResult:
