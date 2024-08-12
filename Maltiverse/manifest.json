@@ -106,11 +106,11 @@
       ],
       "mandatory": false,
       "default": [
-        "Command and Control",
-        "Phishing",
-        "Malware Distribution",
-        "Cybercrime",
-        "Malicious URL"
+        "VdhZV34B4jHUXfKt_gDi",
+        "EIAO4HAB8jmkCY9e8HoL",
+        "ZtjCV34B4jHUXfKtjWdD",
+        "04xeknEB8jmkCY9eOoUv",
+        "H4yrknEB8jmkCY9eb4aN"
         ],
       "description": "Select the Feeds to import."
     },
