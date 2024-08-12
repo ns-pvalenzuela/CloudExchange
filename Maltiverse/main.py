@@ -162,7 +162,7 @@ class MaltiversePlugin(PluginBase):
                 )
                 raise exp
 
-        return list(set(indicators))
+        return indicators
 
     def extract_indicators(self, response, indicators) -> tuple[list, int]:
         """
@@ -229,7 +229,7 @@ class MaltiversePlugin(PluginBase):
             )
             indicator_count += 1
 
-        return indicators, indicator_count
+        return list(set(indicators)), indicator_count
 
     def validate(self, configuration) -> ValidationResult:
         """Validate the Plugin configuration parameters.
