@@ -229,7 +229,8 @@ class MaltiversePlugin(PluginBase):
             )
             indicator_count += 1
 
-        return list(set(indicators)), indicator_count
+        indicators = list(set(indicators))
+        return indicators, indicator_count
 
     def validate(self, configuration) -> ValidationResult:
         """Validate the Plugin configuration parameters.
