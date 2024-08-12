@@ -228,7 +228,6 @@ class MaltiversePlugin(PluginBase):
                     type=current_type,
                     severity=current_risk
                 )
-            #indicators.append(current_indicator) if current_indicator not in indicators else indicators
             indicators.append(current_indicator)
             indicator_count += 1
 
