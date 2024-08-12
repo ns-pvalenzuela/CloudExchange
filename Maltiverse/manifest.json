@@ -34,7 +34,7 @@
       ],
       "mandatory": true,
       "default": [
-        "Malicious"
+        "malicious"
         ],
       "description": "Which classifications to import."
     },
