@@ -104,7 +104,7 @@ class MaltiversePlugin(PluginBase):
 
     def pull(self) -> List[Indicator]:
         """Pull indicators from Maltiverse plugin."""
-        indicators = []
+        indicators = set()
         feeds = []
 
         if self.configuration.get("feedids", "value"):
@@ -166,15 +166,15 @@ class MaltiversePlugin(PluginBase):
                 )
                 raise exp
 
-        return indicators
+        return list(indicators)
 
-    def extract_indicators(self, response, indicators) -> tuple[list, int]:
+    def extract_indicators(self, response, indicators) -> tuple[set, int]:
         """
         Extract indicators from a given response based on the specified indicator types.
 
         Args:
             response (str): The response from which to extract indicators.
-            indicators (list): current indicator list
+            indicators (set): current indicator list
 
         Returns:
             Tuple[List[dict], int]: A tuple containing a list of extracted \
@@ -224,20 +224,13 @@ class MaltiversePlugin(PluginBase):
             else:
                 current_risk = SeverityType.UNKNOWN
 
-            current_indicator = Indicator(
+            indicators.append(
+                Indicator(
                     value=current_indicator_value,
                     type=current_type,
                     severity=current_risk
                 )
-            if current_indicator not in indicators:
-                indicators.append(current_indicator)
-            #indicators.append(
-            #    Indicator(
-            #        value=current_indicator_value,
-            #        type=current_type,
-            #        severity=current_risk
-            #    )
-            #)
+            )
             indicator_count += 1
 
         return indicators, indicator_count
