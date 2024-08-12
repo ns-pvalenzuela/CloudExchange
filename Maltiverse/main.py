@@ -223,12 +223,14 @@ class MaltiversePlugin(PluginBase):
                 current_risk = SeverityType.LOW
             else:
                 current_risk = SeverityType.UNKNOWN
-            current_indicator = Indicator(
+
+            indicators.append(
+                Indicator(
                     value=current_indicator_value,
                     type=current_type,
                     severity=current_risk
                 )
-            indicators.append(current_indicator)
+            )
             indicator_count += 1
 
         return indicators, indicator_count
