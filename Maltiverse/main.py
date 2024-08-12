@@ -39,6 +39,7 @@ from netskope.integrations.cte.models import Indicator, IndicatorType, SeverityT
 from netskope.integrations.cte.plugin_base import (
     PluginBase,
     ValidationResult,
+    PushResult,
 )
 
 from .utils.maltiverse_constants import (
@@ -197,10 +198,10 @@ class MaltiversePlugin(PluginBase):
                 current_indicator_value = registry['sha256']
             elif registry['type'] == 'ip':
                 current_indicator_value = registry['ip_addr']
-                if ':' in current_indicator_value:
-                    current_type = getattr(IndicatorType, "IPV6", IndicatorType.URL)
-                else:
-                    current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
+                current_type = getattr(IndicatorType, "IPV4", IndicatorType.URL)
+            elif registry['type'] == 'ipv6':
+                current_indicator_value = registry['ip_addr']
+                current_type = getattr(IndicatorType, "IPV6", IndicatorType.URL)
             elif registry['type'] == 'url':
                 current_type = IndicatorType.URL
                 current_indicator_value = registry['url']
@@ -237,7 +238,6 @@ class MaltiversePlugin(PluginBase):
 
     def validate(self, configuration) -> ValidationResult:
         """Validate the Plugin configuration parameters.
-
         Args:
             configuration (dict): Dict object having all the Plugin
             configuration parameters.
