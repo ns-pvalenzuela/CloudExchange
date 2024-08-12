@@ -142,7 +142,7 @@ class MaltiversePlugin(PluginBase):
                 self.logger.info(
                     f"{self.log_prefix}: Successfully fetched "
                     f"{indicator_count} IOC(s) "
-                    f"from the feed {feed}"
+                    f"from feed ID {feed}"
                 )
 
             except MaltiversePluginException as exp:
