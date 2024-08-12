@@ -33,15 +33,15 @@
         },
         {
           "key": "url",
-          "value": "Url"
+          "value": "URL"
         }
       ],
       "mandatory": true,
       "default": [
-        "domain",
-        "hash",
-        "ip",
-        "url"
+        "Domain",
+        "Hash",
+        "IP",
+        "URL"
         ],
       "description": "Select the Risk List to import."
     },
@@ -50,7 +50,7 @@
       "key": "fetchevidences",
       "type": "choice",
       "mandatory": true,
-      "default": "yes",
+      "default": "Yes",
       "description": "Choose if you want to import all IOC evidences (can be a long text) into the comments field.",
       "choices": [
         {
