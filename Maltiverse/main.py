@@ -114,6 +114,10 @@ class MaltiversePlugin(PluginBase):
             feeds += otherfeeds.split(',')
             feeds = map(str.strip, feeds)
 
+        temp_feeds = ''.join(feeds)
+        self.logger.debug(
+            f"Pulling indicators from: {temp_feeds}. "
+        )
         for feed in feeds:
             if not feed:
                 continue
