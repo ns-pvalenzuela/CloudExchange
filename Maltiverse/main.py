@@ -228,7 +228,7 @@ class MaltiversePlugin(PluginBase):
                 Indicator(
                     value=current_indicator_value,
                     type=current_type,
-                    severity=current_risk,
+                    severity=current_risk
                 )
             )
             indicator_count += 1
