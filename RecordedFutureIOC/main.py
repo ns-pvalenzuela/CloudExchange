@@ -170,6 +170,9 @@ class RecordedFutureIOCPlugin(PluginBase):
             Tuple[List[dict], int]: A tuple containing a list of extracted \
                                     indicators and the number of indicators.
         """
+        self.logger.debug(
+            f"response: {response} "
+        )
         indicator_count = 0
         headers = True
 
