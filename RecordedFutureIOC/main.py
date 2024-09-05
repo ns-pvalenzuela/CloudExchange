@@ -111,7 +111,7 @@ class RecordedFutureIOCPlugin(PluginBase):
         for risklist in risklists:
             url = ("https://api.recordedfuture.com/v2/" +
                    risklist +
-                   "/risklist?format=application%2Fstix%2Bjson%3Bversion%3D2.1&gzip=false&list=default")
+                   "/risklist?format=application/stix+json;version=2.1&gzip=false&list=default")
 
             try:
                 response = self.recorded_future_ioc_helper.api_helper(
