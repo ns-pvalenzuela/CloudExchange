@@ -110,7 +110,7 @@ class RecordedFutureIOCPlugin(PluginBase):
         self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the risklist(s) {risklists}")
         for risklist in risklists:
             url = ("https://api.recordedfuture.com/v2/" +
-                   risklist +
+                   risklist.lower() +
                    "/risklist?format=application%2Fstix%2Bjson%3Bversion%3D2.1&gzip=false&list=default")
 
             try:
