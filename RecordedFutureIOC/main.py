@@ -31,8 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CTE Recorded Future IOC Plugin.
 """
-import traceback
+import traceback, json
 from typing import List
+from .utils import xmltodict
 
 from netskope.integrations.cte.models import Indicator, IndicatorType, SeverityType
 
@@ -111,7 +112,7 @@ class RecordedFutureIOCPlugin(PluginBase):
         for risklist in risklists:
             url = ("https://api.recordedfuture.com/v2/" +
                    risklist +
-                   "/risklist?format=csv%2Fsplunk&gzip=false&list=default")
+                   "/risklist?format=xml%2Fstix%2F1.2&gzip=false&list=default")
 
             try:
                 response = self.recorded_future_ioc_helper.api_helper(
@@ -125,7 +126,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                              "accept": "application/json"}
                 )
                 indicators, indicator_count = self.extract_indicators(
-                    response, risklist, indicators
+                    self.xml_to_dict(response), risklist, indicators
                 )
 
                 self.logger.debug(
@@ -162,7 +163,8 @@ class RecordedFutureIOCPlugin(PluginBase):
 
         Args:
             response (str): The response from which to extract indicators.
-            indicator_type (string): the type of IOC fetching
+            indicators (string): the current IOC list
+            risklist (string): the current risklist pulled from Recoded Future
 
         Returns:
             Tuple[List[dict], int]: A tuple containing a list of extracted \
@@ -256,3 +258,24 @@ class RecordedFutureIOCPlugin(PluginBase):
             return ValidationResult(success=False, message=err_msg)
 
         return ValidationResult(success=True, message="Validation Successful for Recoded Future IOC plugin")
+
+    def xml_to_dict(self, xml_data: str):
+        """Convert XML data to python dictionary.
+
+        Args:
+            xml_data (str): Response data in xml format.
+
+        Returns:
+            dict: Dictionary containing converted data.
+        """
+        try:
+            return json.loads(json.dumps(xmltodict.parse(xml_data)))
+        except Exception as exp:
+            err_msg = "Error occurred while pulling indicators."
+            self.logger.error(
+                message=(
+                    f"{self.log_prefix}: {err_msg} Error: {str(exp)}"
+                ),
+                details=str(traceback.format_exc()),
+            )
+            raise exp
