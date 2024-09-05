@@ -33,7 +33,6 @@ CTE Recorded Future IOC Plugin.
 """
 import traceback, json
 from typing import List
-from .utils import xmltodict
 
 from netskope.integrations.cte.models import Indicator, IndicatorType, SeverityType
 
@@ -112,7 +111,7 @@ class RecordedFutureIOCPlugin(PluginBase):
         for risklist in risklists:
             url = ("https://api.recordedfuture.com/v2/" +
                    risklist +
-                   "/risklist?format=xml%2Fstix%2F1.2&gzip=false&list=default")
+                   "/risklist?format=application%2Fstix%2Bjson%3Bversion%3D2.1&gzip=false&list=default")
 
             try:
                 response = self.recorded_future_ioc_helper.api_helper(
@@ -126,7 +125,7 @@ class RecordedFutureIOCPlugin(PluginBase):
                              "accept": "application/json"}
                 )
                 indicators, indicator_count = self.extract_indicators(
-                    self.xml_to_dict(response), risklist, indicators
+                    response, risklist, indicators
                 )
 
                 self.logger.debug(
@@ -170,9 +169,6 @@ class RecordedFutureIOCPlugin(PluginBase):
             Tuple[List[dict], int]: A tuple containing a list of extracted \
                                     indicators and the number of indicators.
         """
-        self.logger.debug(
-            f"response: {response} "
-        )
         indicator_count = 0
         headers = True
 
@@ -261,24 +257,3 @@ class RecordedFutureIOCPlugin(PluginBase):
             return ValidationResult(success=False, message=err_msg)
 
         return ValidationResult(success=True, message="Validation Successful for Recoded Future IOC plugin")
-
-    def xml_to_dict(self, xml_data: str):
-        """Convert XML data to python dictionary.
-
-        Args:
-            xml_data (str): Response data in xml format.
-
-        Returns:
-            dict: Dictionary containing converted data.
-        """
-        try:
-            return json.loads(json.dumps(xmltodict.parse(xml_data)))
-        except Exception as exp:
-            err_msg = "Error occurred while pulling indicators."
-            self.logger.error(
-                message=(
-                    f"{self.log_prefix}: {err_msg} Error: {str(exp)}"
-                ),
-                details=str(traceback.format_exc()),
-            )
-            raise exp
