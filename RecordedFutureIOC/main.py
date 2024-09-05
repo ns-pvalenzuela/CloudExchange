@@ -105,7 +105,7 @@ class RecordedFutureIOCPlugin(PluginBase):
     def pull(self) -> List[Indicator]:
         """Pull indicators from Recorded Future IOC plugin."""
         indicators = []
-        risklists = self.configuration.get("risklists", "value")
+        risklists = self.configuration.get("risklists", "key")
 
         self.logger.info(f"{self.log_prefix}: Pulling IOC(s) of the risklist(s) {risklists}")
         for risklist in risklists:
