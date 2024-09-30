@@ -373,5 +373,5 @@ class MaltiversePlugin(PluginBase):
         """
 
         return [
-            ActionWithoutParams(label="Share Indicators", value ="share")
+            ActionWithoutParams(label="Share Indicators", value="share")
         ]
