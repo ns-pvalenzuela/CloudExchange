@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CTE Maltiverse Plugin.
 """
-import traceback, json
+import traceback, json, ipaddress, re
 from typing import List
 
 from netskope.integrations.cte.models import Indicator, IndicatorType, SeverityType
@@ -260,3 +260,106 @@ class MaltiversePlugin(PluginBase):
             return ValidationResult(success=False, message=err_msg)
 
         return ValidationResult(success=True, message="Validation Successful for Maltiverse plugin")
+
+    def push(self, indicators: List[Indicator], action_dict: Dict):
+        """Push the Indicator list to CrowdStrike.
+
+        Args:
+            indicators (List[cte.models.Indicators]): List of Indicator
+            objects to be pushed.
+        Returns:
+            cte.plugin_base.PushResult: PushResult object with success
+            flag and Push result message.
+        """
+        target_action = action_dict.get("parameters", {}).get("action")
+
+        (base_url, client_id, client_secret) = (
+            self.crowdstrike_helper.get_credentials(self.configuration)
+        )
+        batch_size = int(
+            self.configuration.get("batch_size", DEFAULT_BATCH_SIZE)
+        )
+        # Prepare headers.
+        headers = self.crowdstrike_helper.get_auth_header(
+            client_id, client_secret, base_url
+        )
+        total_indicators = self._get_total_iocs_on_ioc_management(
+            headers=headers
+        )
+        is_push_accepted = True
+        if total_indicators >= IOC_MANAGEMENT_INDICATORS_LIMIT:
+            err_msg = (
+                f"Limit of 1 Million indicators on {IOC_MANAGEMENT} "
+                "is reached hence no new indicators will be shared, "
+                f"remove existing indicators from {IOC_MANAGEMENT}"
+                " to remain under this limit."
+            )
+            self.logger.info(f"{self.log_prefix}: {err_msg}")
+            is_push_accepted = False
+
+        # Step-1
+        # Convert IOCs to Maltiverse format
+        generated_payload = {}
+        total_ioc_count = 0
+        skipped_ioc = 0
+
+        for indicator in indicators:
+            total_ioc_count += 1
+            if indicator.severity == SeverityType.LOW:
+                current_severity= 'neutral'
+            elif indicator.severity == SeverityType.MEDIUM:
+                current_severity = 'suspicious'
+            elif indicator.severity == SeverityType.CRITICAL or indicator.severity == SeverityType.HIGH:
+                current_severity = 'malicious'
+            else:
+                continue
+
+            ioc_payload = {
+                "blacklist": [
+                    {
+                        "description": indicator.comments,
+                        "first_seen": indicator.firstSeen,
+                        "last_seen": indicator.lastSeen,
+                        "source": indicator.source,
+                    }
+                ],
+                "classification": current_severity
+            }
+
+            ioc_value = indicator.value.lower()
+            if indicator.type == IndicatorType.SHA256:
+                ioc_payload.update({"sha256": ioc_value})
+            elif indicator.type == IndicatorType.MD5:
+                ioc_payload.update({"md5": ioc_value})
+            else:
+                if ipaddress.IPv4Address(ioc_value):
+                    ioc_payload.update({"type":"ip","ip_addr":ioc_value})
+                elif ipaddress.IPv6Address(ioc_value):
+                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
+                elif '/' in ioc_value:
+                    ioc_payload.update({"type": "url", "url": ioc_value})
+                elif re.match(
+                    r"^(?!.{255}|.{253}[^.])([a-z0-9](?:[-a-z-0-9]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?[.]?$",  # noqa
+                    ioc_value,
+                    re.IGNORECASE,
+                    ):
+                    ioc_payload.update({"type": "hostname", "domain": ioc_value})
+                else:
+                    skipped_ioc += 1
+                    continue
+            if total_ioc_count % self.upload_batch == 0:
+                # Step-2
+                # Share indicators with Maltiverse.
+
+                generated_payload={}
+            else:
+                generated_payload.update(ioc_payload)
+
+        log_msg=(
+            f"{self.log_prefix}: Successfully pushed "
+            f"{total_ioc_count-skipped_ioc} indicators out of {total_ioc_count}"
+        )
+        return PushResult(
+            success=True,
+            message=log_msg,
+        )

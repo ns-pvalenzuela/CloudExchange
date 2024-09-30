@@ -4,7 +4,7 @@
   "version": "1.0.0-beta",
   "description": "This plugin is used to exchange IOCs with Maltiverse.",
   "patch_supported": false,
-  "push_supported": false,
+  "push_supported": true,
   "configuration": [
     {
       "label": "API Key",
