@@ -263,31 +263,6 @@ class MaltiversePlugin(PluginBase):
             cte.plugin_base.PushResult: PushResult object with success
             flag and Push result message.
         """
-        target_action = action_dict.get("parameters", {}).get("action")
-
-        (base_url, client_id, client_secret) = (
-            self.crowdstrike_helper.get_credentials(self.configuration)
-        )
-        batch_size = int(
-            self.configuration.get("batch_size", DEFAULT_BATCH_SIZE)
-        )
-        # Prepare headers.
-        headers = self.crowdstrike_helper.get_auth_header(
-            client_id, client_secret, base_url
-        )
-        total_indicators = self._get_total_iocs_on_ioc_management(
-            headers=headers
-        )
-        is_push_accepted = True
-        if total_indicators >= IOC_MANAGEMENT_INDICATORS_LIMIT:
-            err_msg = (
-                f"Limit of 1 Million indicators on {IOC_MANAGEMENT} "
-                "is reached hence no new indicators will be shared, "
-                f"remove existing indicators from {IOC_MANAGEMENT}"
-                " to remain under this limit."
-            )
-            self.logger.info(f"{self.log_prefix}: {err_msg}")
-            is_push_accepted = False
 
         # Step-1
         # Convert IOCs to Maltiverse format
