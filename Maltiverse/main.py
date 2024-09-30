@@ -34,16 +34,21 @@ CTE Maltiverse Plugin.
 import traceback, json, ipaddress, re
 from typing import List
 
-from netskope.integrations.cte.models import Indicator, IndicatorType, SeverityType
-
-from netskope.integrations.cte.plugin_base import (
-    PluginBase,
-    ValidationResult,
-    PushResult,
+from netskope.integrations.cte.models import (
+    Indicator,
+    IndicatorType,
+    SeverityType,
 )
+
 from netskope.integrations.cte.models.business_rule import (
     Action,
     ActionWithoutParams,
+)
+
+from netskope.integrations.cte.plugin_base import (
+    PluginBase,
+    PushResult,
+    ValidationResult,
 )
 
 from .utils.maltiverse_constants import (
@@ -53,7 +58,6 @@ from .utils.maltiverse_constants import (
 )
 
 from .utils.maltiverse_helper import (
-    MaltiversePluginException,
     MaltiversePluginHelper
 )
 
@@ -320,11 +324,11 @@ class MaltiversePlugin(PluginBase):
                 else:
                     skipped_ioc += 1
                     continue
-            if total_ioc_count % self.upload_batch == 0:
+            if total_ioc_count % 10000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
                 try:
-                    response = self.maltiverse_helper.api_helper(
+                    self.maltiverse_helper.api_helper(
                         url="http://api.maltiverse.com/bulk",
                         method="POST",
                         verify=self.ssl_validation,
@@ -361,7 +365,6 @@ class MaltiversePlugin(PluginBase):
             success=True,
             message=log_msg,
         )
-
     def get_action_fields(self, action: Action):
         """Get fields required for an action."""
         action_value = action.value
