@@ -253,7 +253,7 @@ class MaltiversePlugin(PluginBase):
 
         return ValidationResult(success=True, message="Validation Successful for Maltiverse plugin")
 
-    def push(self, indicators: List[Indicator], action_dict):
+    def push(self, indicators: List[Indicator]):
         """Push the Indicator list to Maltiverse.
 
         Args:
