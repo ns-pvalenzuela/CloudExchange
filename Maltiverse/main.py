@@ -41,6 +41,10 @@ from netskope.integrations.cte.plugin_base import (
     ValidationResult,
     PushResult,
 )
+from netskope.integrations.cte.models.business_rule import (
+    Action,
+    ActionWithoutParams,
+)
 
 from .utils.maltiverse_constants import (
     MODULE_NAME,
