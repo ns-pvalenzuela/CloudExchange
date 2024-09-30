@@ -3,4 +3,4 @@
 - Initial release.
 # 1.1.0
 ## Added
-- Push IOC support
+- Added push IOC support
