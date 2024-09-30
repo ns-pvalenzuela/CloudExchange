@@ -149,14 +149,6 @@ class MaltiversePlugin(PluginBase):
                     f"{indicator_count} IOC(s) "
                     f"from feed ID {feed}"
                 )
-
-            except MaltiversePluginException as exp:
-                err_msg = "Error occurred while pulling indicators."
-                self.logger.error(
-                    message=(f"{self.log_prefix}: {err_msg} Error: {str(exp)}"),
-                    details=str(traceback.format_exc()),
-                )
-                raise exp
             except Exception as exp:
                 err_msg = "Error occurred while pulling indicators."
                 self.logger.error(
@@ -350,7 +342,32 @@ class MaltiversePlugin(PluginBase):
             if total_ioc_count % self.upload_batch == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
+                try:
+                    response = self.maltiverse_helper.api_helper(
+                        url="http://api.maltiverse.com/bulk",
+                        method="POST",
+                        verify=self.ssl_validation,
+                        proxies=self.proxy,
+                        logger_msg="pushing IOC(s)",
+                        headers={"accept": "application/json",
+                                 "Authorization": f"Bearer {self.configuration['apikey']}"
+                                 },
+                        data=generated_payload
+                    )
 
+                    self.logger.debug(
+                        f"Pull Stat: {len(generated_payload)} indicator(s) were sent. "
+                    )
+
+                except Exception as exp:
+                    err_msg = "Error occurred while pushing indicators."
+                    self.logger.error(
+                        message=(
+                            f"{self.log_prefix}: {err_msg} Error: {str(exp)}"
+                        ),
+                        details=str(traceback.format_exc()),
+                    )
+                    raise exp
                 generated_payload={}
             else:
                 generated_payload.update(ioc_payload)
