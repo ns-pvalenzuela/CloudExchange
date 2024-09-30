@@ -373,7 +373,7 @@ class MaltiversePlugin(PluginBase):
         """
 
         return [
-            ActionWithoutParams(label="Share Indicators", value="share")
+            ActionWithoutParams(label="Share All Indicators", value="share")
         ]
 
     def get_action_fields(self, action: Action):
