@@ -357,3 +357,27 @@ class MaltiversePlugin(PluginBase):
             success=True,
             message=log_msg,
         )
+
+    def get_action_fields(self, action: Action):
+        """Get fields required for an action."""
+        action_value = action.value
+        if action_value == "action":
+            return [
+                {
+                    "label": "Action",
+                    "key": "action",
+                    "type": "choice",
+                    "choices": [
+                        {
+                            "key": "Block IOCs",  # noqa
+                            "value": "block",
+                        }
+                    ],
+                    "default": "block",
+                    "mandatory": True,
+                    "description": (
+                        "Action to take when a host observes"
+                        " the custom IOC."
+                    ),
+                }
+                ]
