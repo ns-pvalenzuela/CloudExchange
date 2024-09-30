@@ -254,11 +254,12 @@ class MaltiversePlugin(PluginBase):
         return ValidationResult(success=True, message="Validation Successful for Maltiverse plugin")
 
     def push(self, indicators: List[Indicator], action_dict):
-        """Push the Indicator list to CrowdStrike.
+        """Push the Indicator list to Maltiverse.
 
         Args:
             indicators (List[cte.models.Indicators]): List of Indicator
             objects to be pushed.
+            action_dict (Dict): Business rule action tags
         Returns:
             cte.plugin_base.PushResult: PushResult object with success
             flag and Push result message.
