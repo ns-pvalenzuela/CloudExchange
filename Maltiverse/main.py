@@ -381,20 +381,4 @@ class MaltiversePlugin(PluginBase):
         action_value = action.value
         if action_value == "share":
             return [
-                {
-                    "label": "Action",
-                    "key": "action",
-                    "type": "choice",
-                    "choices": [
-                        {
-                            "key": "All IOCs",  # noqa
-                            "value": "all",
-                        }
-                    ],
-                    "default": "all",
-                    "mandatory": True,
-                    "description": (
-                        "IOCs to share"
-                    ),
-                }
             ]
