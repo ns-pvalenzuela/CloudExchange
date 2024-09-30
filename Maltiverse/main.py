@@ -280,6 +280,7 @@ class MaltiversePlugin(PluginBase):
             elif indicator.severity == SeverityType.CRITICAL or indicator.severity == SeverityType.HIGH:
                 current_severity = 'malicious'
             else:
+                skipped_ioc += 1
                 continue
 
             ioc_payload = {
