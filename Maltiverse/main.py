@@ -375,3 +375,26 @@ class MaltiversePlugin(PluginBase):
         return [
             ActionWithoutParams(label="Share Indicators", value="share")
         ]
+
+    def get_action_fields(self, action: Action):
+        """Get fields required for an action."""
+        action_value = action.value
+        if action_value == "share":
+            return [
+                {
+                    "label": "Action",
+                    "key": "action",
+                    "type": "choice",
+                    "choices": [
+                        {
+                            "key": "All IOCs",  # noqa
+                            "value": "all",
+                        }
+                    ],
+                    "default": "all",
+                    "mandatory": True,
+                    "description": (
+                        "IOCs to share"
+                    ),
+                }
+            ]
