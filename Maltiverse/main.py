@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 CTE Maltiverse Plugin.
 """
 import traceback, json, ipaddress, re
-from typing import List
+from typing import Dict, List, Tuple
 
 from netskope.integrations.cte.models import (
     Indicator,
@@ -262,7 +262,7 @@ class MaltiversePlugin(PluginBase):
 
         return ValidationResult(success=True, message="Validation Successful for Maltiverse plugin")
 
-    def push(self, indicators: List[Indicator]):
+    def push(self, indicators: List[Indicator], action_dict: Dict):
         """Push the Indicator list to Maltiverse.
 
         Args:
@@ -282,15 +282,7 @@ class MaltiversePlugin(PluginBase):
 
         for indicator in indicators:
             total_ioc_count += 1
-            if indicator.severity == SeverityType.LOW:
-                current_severity= 'neutral'
-            elif indicator.severity == SeverityType.MEDIUM:
-                current_severity = 'suspicious'
-            elif indicator.severity == SeverityType.CRITICAL or indicator.severity == SeverityType.HIGH:
-                current_severity = 'malicious'
-            else:
-                skipped_ioc += 1
-                continue
+            action_params = action_dict.get("parameters", {})
 
             ioc_payload = {
                 "blacklist": [
@@ -300,18 +292,23 @@ class MaltiversePlugin(PluginBase):
                         "last_seen": indicator.lastSeen,
                         "source": indicator.source,
                     }
-                ],
-                "classification": current_severity
+                ]
             }
+
+            if indicator.severity in action_params.get("value"):
+                ioc_payload.update({"classification": action_dict.get("key")})
+            else:
+                skipped_ioc += 1
+                continue
 
             ioc_value = indicator.value.lower()
             if indicator.type == IndicatorType.SHA256:
-                ioc_payload.update({"type":"sample","sha256": ioc_value})
+                ioc_payload.update({"type": "sample","sha256": ioc_value})
             elif indicator.type == IndicatorType.MD5:
-                ioc_payload.update({"type":"sample","md5": ioc_value})
+                ioc_payload.update({"type": "sample","md5": ioc_value})
             else:
                 if ipaddress.IPv4Address(ioc_value):
-                    ioc_payload.update({"type":"ip","ip_addr":ioc_value})
+                    ioc_payload.update({"type": "ip","ip_addr":ioc_value})
                 elif ipaddress.IPv6Address(ioc_value):
                     ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
                 elif '/' in ioc_value:
@@ -374,9 +371,7 @@ class MaltiversePlugin(PluginBase):
         """
 
         return [
-            ActionWithoutParams(label="Share Malicious IOCs", value="malicious"),
-            ActionWithoutParams(label="Share Suspicious IOCs", value="suspicious"),
-            ActionWithoutParams(label="Share Neutral IOCs", value="neutral"),
+            ActionWithoutParams(label="Send IOCs", value="send"),
         ]
 
     def get_action_fields(self, action: Action):
@@ -387,28 +382,28 @@ class MaltiversePlugin(PluginBase):
             action (Action): Action to perform on IoCs.
         """
         action_value = action.value
-        if action_value == "malicious":
+        if action_value == "send":
             return [
                 {
-                    "label": "Share IOCs as Malicious",
+                    "label": "Send as Malicious IOCs",
                     "key": "malicious",
                     "type": "multichoice",
                     "choices": [
                         {
                             "key": "Include Critical IOCs",
-                            "value": "critical",
+                            "value": SeverityType.CRITICAL,
                         },
                         {
                             "key": "Include High IOCs",
-                            "value": "high",
+                            "value": SeverityType.HIGH,
                         },
                         {
                             "key": "Include Medium IOCs",
-                            "value": "medium",
+                            "value": SeverityType.MEDIUM,
                         },
                         {
                             "key": "Include Low IOCs",
-                            "value": "low",
+                            "value": SeverityType.LOW,
                         },
                     ],
                     "default": ["critical", "high"],
@@ -416,67 +411,61 @@ class MaltiversePlugin(PluginBase):
                     "description": (
                         "What severities to include as malicious when sending IOCs"
                     ),
-                }
-            ]
-        elif action_value == "suspicious":
-            return [
+                },
                 {
-                    "label": "Share IOCs as Suspicious",
+                    "label": "Send as Suspicious IOCs",
                     "key": "suspicious",
                     "type": "multichoice",
                     "choices": [
                         {
                             "key": "Include Critical IOCs",
-                            "value": "critical",
+                            "value": SeverityType.CRITICAL,
                         },
                         {
                             "key": "Include High IOCs",
-                            "value": "high",
+                            "value": SeverityType.HIGH,
                         },
                         {
                             "key": "Include Medium IOCs",
-                            "value": "medium",
+                            "value": SeverityType.MEDIUM,
                         },
                         {
                             "key": "Include Low IOCs",
-                            "value": "low",
+                            "value": SeverityType.LOW,
                         },
                     ],
                     "default": "medium",
                     "mandatory": True,
                     "description": (
-                        "What severities to include as suspicious when sending IOCs"
+                        "What severities to include as malicious when sending IOCs"
                     ),
-                }
-            ]
-        elif action_value == "neutral":
-            return [
+                },
                 {
-                    "label": "Share IOCs as Neutral",
-                    "key": "suspicious",
+                    "label": "Send as Neutral IOCs",
+                    "key": "neutral",
                     "type": "multichoice",
                     "choices": [
                         {
                             "key": "Include Critical IOCs",
-                            "value": "critical",
+                            "value": SeverityType.CRITICAL,
                         },
                         {
                             "key": "Include High IOCs",
-                            "value": "high",
+                            "value": SeverityType.HIGH,
                         },
                         {
                             "key": "Include Medium IOCs",
-                            "value": "medium",
+                            "value": SeverityType.MEDIUM,
                         },
                         {
                             "key": "Include Low IOCs",
-                            "value": "low",
+                            "value": SeverityType.LOW,
                         },
                     ],
                     "default": "low",
                     "mandatory": True,
                     "description": (
-                        "What severities to include as low when sending IOCs"
+                        "What severities to include as malicious when sending IOCs"
                     ),
                 }
             ]
