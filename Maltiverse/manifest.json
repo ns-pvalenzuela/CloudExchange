@@ -123,6 +123,84 @@
       "mandatory": false,
       "default": "",
       "description": "Comma Separated list of other feeds ids to import."
+    },
+    {
+      "label": "Malicious severity",
+      "key": "malicious_severity",
+      "type": "choice",
+      "choices": [
+          {
+              "value": SeverityType.CRITICAL,
+              "key": "Critical"
+          },
+          {
+              "value": SeverityType.HIGH,
+              "key": "High"
+          },
+          {
+              "value": SeverityType.MEDIUM,
+              "key": "Medium"
+          },
+          {
+              "value": SeverityType.LOW,
+              "key": "Low"
+          }
+        "mandatory": true,
+        "default":, SeverityType.CRITICAL,
+        "description": "Severity to assign any IOCs with Maltiverse classification of malicious"
+      ]
+    },
+    {
+      "label": "Suspicious severity",
+      "key": "suspicious_severity",
+      "type": "choice",
+      "choices": [
+          {
+              "value": SeverityType.CRITICAL,
+              "key": "Critical"
+          },
+          {
+              "value": SeverityType.HIGH,
+              "key": "High"
+          },
+          {
+              "value": SeverityType.MEDIUM,
+              "key": "Medium"
+          },
+          {
+              "value": SeverityType.LOW,
+              "key": "Low"
+          }
+        "mandatory": true,
+        "default":, SeverityType.MEDIUM,
+        "description": "Severity to assign any IOCs with Maltiverse classification of suspicious"
+      ]
+    },
+    {
+      "label": "Malicious severity",
+      "key": "malicious_severity",
+      "type": "choice",
+      "choices": [
+          {
+              "value": SeverityType.CRITICAL,
+              "key": "Critical"
+          },
+          {
+              "value": SeverityType.HIGH,
+              "key": "High"
+          },
+          {
+              "value": SeverityType.MEDIUM,
+              "key": "Medium"
+          },
+          {
+              "value": SeverityType.LOW,
+              "key": "Low"
+          }
+        "mandatory": true,
+        "default":, SeverityType.LOW,
+        "description": "Severity to assign any IOCs with Maltiverse classification of neutral"
+      ]
     }
   ]
 }
