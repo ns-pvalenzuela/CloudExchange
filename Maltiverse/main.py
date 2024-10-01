@@ -326,6 +326,7 @@ class MaltiversePlugin(PluginBase):
                 # Step-2
                 # Share indicators with Maltiverse.
                 try:
+                    self.logger.debug(f"Payload: {generated_payload}")
                     self.maltiverse_helper.api_helper(
                         url="http://api.maltiverse.com/bulk",
                         method="POST",
