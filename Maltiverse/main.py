@@ -410,6 +410,11 @@ class MaltiversePlugin(PluginBase):
                             "value": "low",
                         },
                     ],
+                    "default": ["critical", "high"],
+                    "mandatory": True,
+                    "description": (
+                        "What severities to include as malicious when sending IOCs"
+                    ),
                 }
             ]
         elif action_value == "suspicious":
@@ -436,6 +441,11 @@ class MaltiversePlugin(PluginBase):
                             "value": "low",
                         },
                     ],
+                    "default": "medium",
+                    "mandatory": True,
+                    "description": (
+                        "What severities to include as suspicious when sending IOCs"
+                    ),
                 }
             ]
         elif action_value == "neutral":
@@ -462,6 +472,11 @@ class MaltiversePlugin(PluginBase):
                             "value": "low",
                         },
                     ],
+                    "default": "low",
+                    "mandatory": True,
+                    "description": (
+                        "What severities to include as low when sending IOCs"
+                    ),
                 }
             ]
 
