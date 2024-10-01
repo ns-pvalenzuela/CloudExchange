@@ -55,6 +55,7 @@ from .utils.maltiverse_constants import (
     MODULE_NAME,
     PLATFORM_NAME,
     PLUGIN_VERSION,
+    CHUNK_SIZE,
 )
 
 from .utils.maltiverse_helper import (
@@ -305,9 +306,9 @@ class MaltiversePlugin(PluginBase):
 
             ioc_value = indicator.value.lower()
             if indicator.type == IndicatorType.SHA256:
-                ioc_payload.update({"sha256": ioc_value})
+                ioc_payload.update({"type":"sample","sha256": ioc_value})
             elif indicator.type == IndicatorType.MD5:
-                ioc_payload.update({"md5": ioc_value})
+                ioc_payload.update({"type":"sample","md5": ioc_value})
             else:
                 if ipaddress.IPv4Address(ioc_value):
                     ioc_payload.update({"type":"ip","ip_addr":ioc_value})
@@ -324,7 +325,7 @@ class MaltiversePlugin(PluginBase):
                 else:
                     skipped_ioc += 1
                     continue
-            if total_ioc_count % 10000 == 0:
+            if total_ioc_count % self.CHUNK_SIZE == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
                 try:
@@ -391,7 +392,7 @@ class MaltiversePlugin(PluginBase):
                 {
                     "label": "Share IOCs as Malicious",
                     "key": "malicious",
-                    "type": "choice",
+                    "type": "multichoice",
                     "choices": [
                         {
                             "key": "Include Critical IOCs",
@@ -422,7 +423,7 @@ class MaltiversePlugin(PluginBase):
                 {
                     "label": "Share IOCs as Suspicious",
                     "key": "suspicious",
-                    "type": "choice",
+                    "type": "multichoice",
                     "choices": [
                         {
                             "key": "Include Critical IOCs",
@@ -453,7 +454,7 @@ class MaltiversePlugin(PluginBase):
                 {
                     "label": "Share IOCs as Neutral",
                     "key": "suspicious",
-                    "type": "choice",
+                    "type": "multichoice",
                     "choices": [
                         {
                             "key": "Include Critical IOCs",
