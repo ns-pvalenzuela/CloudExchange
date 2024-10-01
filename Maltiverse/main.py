@@ -67,10 +67,10 @@ class MaltiversePlugin(PluginBase):
     """Maltiverse Plugin class template implementation."""
 
     def __init__(
-        self,
-        name,
-        *args,
-        **kwargs,
+            self,
+            name,
+            *args,
+            **kwargs,
     ):
         """Initialize Plugin class."""
         super().__init__(
@@ -120,7 +120,7 @@ class MaltiversePlugin(PluginBase):
         if self.configuration.get("feedids", "value"):
             feeds += self.configuration.get("feedids", "value")
         if self.configuration.get("otherfeeds", ""):
-            otherfeeds =  self.configuration.get("otherfeeds", "")
+            otherfeeds = self.configuration.get("otherfeeds", "")
             feeds += otherfeeds.split(',')
             feeds = map(str.strip, feeds)
 
@@ -184,7 +184,7 @@ class MaltiversePlugin(PluginBase):
         """
         indicator_count = 0
 
-        json_response=json.loads(response)
+        json_response = json.loads(response)
         for registry in json_response:
             if registry['classification'] not in self.configuration.get("classifications", "value"):
                 classlist = self.configuration.get("classifications", "value")
@@ -218,7 +218,7 @@ class MaltiversePlugin(PluginBase):
                 )
                 continue
             if registry['classification'] == 'malicious':
-                current_risk=self.configuration.get("malicious_severity", "value")
+                current_risk = self.configuration.get("malicious_severity", "value")
             elif registry['classification'] == 'suspicious':
                 current_risk = self.configuration.get("suspicious_severity", "value")
             elif registry['classification'] == 'neutral':
@@ -295,11 +295,11 @@ class MaltiversePlugin(PluginBase):
             }
 
             action_params = action_dict.get("parameters", {})
-            if indicator.severity in action_params.get("malicious",[]):
+            if indicator.severity in action_params.get("malicious", []):
                 ioc_payload.update({"classification": "malicious"})
-            elif indicator.severity in action_params.get("suspicious",[]):
+            elif indicator.severity in action_params.get("suspicious", []):
                 ioc_payload.update({"classification": "suspicious"})
-            elif indicator.severity in action_params.get("neutral",[]):
+            elif indicator.severity in action_params.get("neutral", []):
                 ioc_payload.update({"classification": "neutral"})
             else:
                 skipped_ioc += 1
@@ -307,21 +307,22 @@ class MaltiversePlugin(PluginBase):
 
             ioc_value = indicator.value.lower()
             if indicator.type == IndicatorType.SHA256:
-                ioc_payload.update({"type": "sample","sha256": ioc_value})
+                ioc_payload.update({"type": "sample", "sha256": ioc_value})
             elif indicator.type == IndicatorType.MD5:
-                ioc_payload.update({"type": "sample","md5": ioc_value})
+                ioc_payload.update({"type": "sample", "md5": ioc_value})
             else:
                 if ipaddress.IPv4Address(ioc_value):
-                    ioc_payload.update({"type": "ip","ip_addr":ioc_value})
+                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
                 elif ipaddress.IPv6Address(ioc_value):
                     ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
                 elif '/' in ioc_value:
                     ioc_payload.update({"type": "url", "url": ioc_value})
                 elif re.match(
-                    r"^(?!.{255}|.{253}[^.])([a-z0-9](?:[-a-z-0-9]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?[.]?$",  # noqa
-                    ioc_value,
-                    re.IGNORECASE,
-                    ):
+                        r"^(?!.{255}|.{253}[^.])([a-z0-9](?:[-a-z-0-9]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?[.]?$",
+                        # noqa
+                        ioc_value,
+                        re.IGNORECASE,
+                ):
                     ioc_payload.update({"type": "hostname", "domain": ioc_value})
                 else:
                     skipped_ioc += 1
@@ -356,13 +357,13 @@ class MaltiversePlugin(PluginBase):
                         details=str(traceback.format_exc()),
                     )
                     raise exp
-                generated_payload={}
+                generated_payload = {}
             else:
                 generated_payload.update(ioc_payload)
 
-        log_msg=(
+        log_msg = (
             f"{self.log_prefix}: Successfully pushed "
-            f"{total_ioc_count-skipped_ioc} indicators out of {total_ioc_count}"
+            f"{total_ioc_count - skipped_ioc} indicators out of {total_ioc_count}"
         )
         return PushResult(
             success=True,
@@ -477,12 +478,12 @@ class MaltiversePlugin(PluginBase):
 
     def validate_action(self, action: Action) -> ValidationResult:
         action_params = action.get("parameters", {})
-        for list_malicious in action_params.get("malicious",[]):
-            for list_suspicious in action_params.get("suspicious",[]):
+        for list_malicious in action_params.get("malicious", []):
+            for list_suspicious in action_params.get("suspicious", []):
                 if (
                         list_malicious == list_suspicious
-                        or list_malicious in action_params.get("neutral",[])
-                        or list_suspicious in action_params.get("neutral",[])
+                        or list_malicious in action_params.get("neutral", [])
+                        or list_suspicious in action_params.get("neutral", [])
                 ):
                     return ValidationResult(
                         success=False,
