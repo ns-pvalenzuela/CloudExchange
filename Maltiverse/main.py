@@ -363,7 +363,7 @@ class MaltiversePlugin(PluginBase):
 
         log_msg = (
             f"{self.log_prefix}: Successfully pushed "
-            f"{total_ioc_count - skipped_ioc} indicators out of {total_ioc_count}"
+            f"{total_ioc_count-skipped_ioc} indicators out of {total_ioc_count}"
         )
         return PushResult(
             success=True,
