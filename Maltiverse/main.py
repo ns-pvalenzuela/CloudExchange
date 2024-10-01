@@ -282,7 +282,6 @@ class MaltiversePlugin(PluginBase):
 
         for indicator in indicators:
             total_ioc_count += 1
-            action_params = action_dict.get("parameters", {})
 
             ioc_payload = {
                 "blacklist": [
@@ -295,8 +294,13 @@ class MaltiversePlugin(PluginBase):
                 ]
             }
 
-            if indicator.severity in action_params.get("value"):
-                ioc_payload.update({"classification": action_dict.get("key")})
+            action_params = action_dict.get("parameters", {})
+            if indicator.severity in action_params.get("malicious",[]):
+                ioc_payload.update({"classification": "malicious"})
+            elif indicator.severity in action_params.get("suspicious",[]):
+                ioc_payload.update({"classification": "suspicious"})
+            elif indicator.severity in action_params.get("neutral",[]):
+                ioc_payload.update({"classification": "neutral"})
             else:
                 skipped_ioc += 1
                 continue
@@ -513,4 +517,16 @@ class MaltiversePlugin(PluginBase):
                 self.logger.error(f"{self.log_prefix}: {err_msg}")
                 return ValidationResult(success=False, message=err_msg)
         """
+        action_params = action.get("parameters", {})
+        for list_malicious in action_params.get("malicious",[]):
+            for list_suspicious in action_params.get("suspicious",[]):
+                if (
+                        list_malicious == list_suspicious
+                        or list_malicious in action_params.get("neutral",[])
+                        or list_suspicious in action_params.get("neutral",[])
+                ):
+                    return ValidationResult(
+                        success=False,
+                        message="A severity can't be in two Maltiverse classifications at the same time.")
+
         return ValidationResult(success=True, message="Validation successful.")
