@@ -476,47 +476,6 @@ class MaltiversePlugin(PluginBase):
             ]
 
     def validate_action(self, action: Action) -> ValidationResult:
-        """Validate crowdstrike configuration.
-
-        Args:
-            action (Action): Action to perform on IoCs.
-
-        Returns:
-            ValidationResult: Validation result.
-
-        action_value = action.value
-        if action_value not in ["action", "isolate_remediate_action"]:
-            return ValidationResult(
-                success=False, message="Unsupported action provided."
-            )
-        if action_value == "action":
-            if action.parameters.get("action") not in [
-                "no_action",
-                "prevent",
-                "detect",
-                "prevent_no_ui",
-                "allow",
-            ]:
-                return ValidationResult(
-                    success=False, message="Unsupported action provided."
-                )
-
-            if action.parameters.get("platforms", []) is None:
-                err_msg = "Platforms should not be empty."
-                self.logger.error(f"{self.log_prefix}: {err_msg}")
-                return ValidationResult(success=False, message=err_msg)
-
-        elif action_value == "isolate_remediate_action":
-            if action.parameters.get("action") not in [
-                "contain",
-                "lift_containment",
-                "hide_host",
-                "unhide_host",
-            ]:
-                err_msg = "Invalid action selected."
-                self.logger.error(f"{self.log_prefix}: {err_msg}")
-                return ValidationResult(success=False, message=err_msg)
-        """
         action_params = action.get("parameters", {})
         for list_malicious in action_params.get("malicious",[]):
             for list_suspicious in action_params.get("suspicious",[]):
