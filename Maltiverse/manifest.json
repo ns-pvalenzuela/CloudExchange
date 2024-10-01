@@ -1,7 +1,7 @@
 {
   "name": "Maltiverse",
   "id": "maltiverse",
-  "version": "1.0.0-beta",
+  "version": "1.2.0",
   "description": "This plugin is used to exchange IOCs with Maltiverse.",
   "patch_supported": false,
   "push_supported": true,
