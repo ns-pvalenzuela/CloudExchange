@@ -111,7 +111,7 @@ class MaltiversePluginHelper(object):
         headers: Dict = {},
         verify=True,
         proxies=None,
-        json=None,
+        json: Dict = {},
         is_handle_error_required=True,
         is_validation=False,
         regenerate_auth_token=True,
