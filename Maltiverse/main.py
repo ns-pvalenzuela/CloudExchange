@@ -379,7 +379,12 @@ class MaltiversePlugin(PluginBase):
         ]
 
     def get_action_fields(self, action: Action):
-        """Get fields required for an action."""
+        """
+        Get fields required for an action.
+
+        Args:
+            action (Action): Action to perform on IoCs.
+        """
         action_value = action.value
         if action_value == "malicious":
             return [
