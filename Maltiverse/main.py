@@ -411,7 +411,7 @@ class MaltiversePlugin(PluginBase):
                             "value": SeverityType.LOW,
                         },
                     ],
-                    "default": ["critical", "high"],
+                    "default": [SeverityType.HIGH, SeverityType.CRITICAL],
                     "mandatory": True,
                     "description": (
                         "What severities to include as malicious when sending IOCs"
@@ -439,7 +439,7 @@ class MaltiversePlugin(PluginBase):
                             "value": SeverityType.LOW,
                         },
                     ],
-                    "default": "medium",
+                    "default": SeverityType.MEDIUM,
                     "mandatory": True,
                     "description": (
                         "What severities to include as malicious when sending IOCs"
@@ -467,7 +467,7 @@ class MaltiversePlugin(PluginBase):
                             "value": SeverityType.LOW,
                         },
                     ],
-                    "default": "low",
+                    "default": SeverityType.LOW,
                     "mandatory": True,
                     "description": (
                         "What severities to include as malicious when sending IOCs"
