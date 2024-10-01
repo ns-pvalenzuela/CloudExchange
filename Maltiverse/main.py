@@ -218,11 +218,11 @@ class MaltiversePlugin(PluginBase):
                 )
                 continue
             if registry['classification'] == 'malicious':
-                current_risk=SeverityType.CRITICAL
+                current_risk=self.configuration.get("malicious_severity", "value")
             elif registry['classification'] == 'suspicious':
-                current_risk = SeverityType.MEDIUM
+                current_risk = self.configuration.get("suspicious_severity", "value")
             elif registry['classification'] == 'neutral':
-                current_risk = SeverityType.LOW
+                current_risk = self.configuration.get("neutral_severity", "value")
             else:
                 current_risk = SeverityType.UNKNOWN
 
