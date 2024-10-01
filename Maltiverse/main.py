@@ -373,12 +373,133 @@ class MaltiversePlugin(PluginBase):
         """
 
         return [
-            ActionWithoutParams(label="Share All Indicators", value="share")
+            ActionWithoutParams(label="Share Malicious IOCs", value="malicious"),
+            ActionWithoutParams(label="Share Suspicious IOCs", value="suspicious"),
+            ActionWithoutParams(label="Share Neutral IOCs", value="neutral"),
         ]
 
     def get_action_fields(self, action: Action):
         """Get fields required for an action."""
         action_value = action.value
-        if action_value == "share":
+        if action_value == "malicious":
             return [
+                {
+                    "label": "Share IOCs as Malicious",
+                    "key": "malicious",
+                    "type": "choice",
+                    "choices": [
+                        {
+                            "key": "Include Critical IOCs",
+                            "value": "critical",
+                        },
+                        {
+                            "key": "Include High IOCs",
+                            "value": "high",
+                        },
+                        {
+                            "key": "Include Medium IOCs",
+                            "value": "medium",
+                        },
+                        {
+                            "key": "Include Low IOCs",
+                            "value": "low",
+                        },
+                    ],
+                }
             ]
+        elif action_value == "suspicious":
+            return [
+                {
+                    "label": "Share IOCs as Suspicious",
+                    "key": "suspicious",
+                    "type": "choice",
+                    "choices": [
+                        {
+                            "key": "Include Critical IOCs",
+                            "value": "critical",
+                        },
+                        {
+                            "key": "Include High IOCs",
+                            "value": "high",
+                        },
+                        {
+                            "key": "Include Medium IOCs",
+                            "value": "medium",
+                        },
+                        {
+                            "key": "Include Low IOCs",
+                            "value": "low",
+                        },
+                    ],
+                }
+            ]
+        elif action_value == "neutral":
+            return [
+                {
+                    "label": "Share IOCs as Neutral",
+                    "key": "suspicious",
+                    "type": "choice",
+                    "choices": [
+                        {
+                            "key": "Include Critical IOCs",
+                            "value": "critical",
+                        },
+                        {
+                            "key": "Include High IOCs",
+                            "value": "high",
+                        },
+                        {
+                            "key": "Include Medium IOCs",
+                            "value": "medium",
+                        },
+                        {
+                            "key": "Include Low IOCs",
+                            "value": "low",
+                        },
+                    ],
+                }
+            ]
+
+    def validate_action(self, action: Action) -> ValidationResult:
+        """Validate crowdstrike configuration.
+
+        Args:
+            action (Action): Action to perform on IoCs.
+
+        Returns:
+            ValidationResult: Validation result.
+
+        action_value = action.value
+        if action_value not in ["action", "isolate_remediate_action"]:
+            return ValidationResult(
+                success=False, message="Unsupported action provided."
+            )
+        if action_value == "action":
+            if action.parameters.get("action") not in [
+                "no_action",
+                "prevent",
+                "detect",
+                "prevent_no_ui",
+                "allow",
+            ]:
+                return ValidationResult(
+                    success=False, message="Unsupported action provided."
+                )
+
+            if action.parameters.get("platforms", []) is None:
+                err_msg = "Platforms should not be empty."
+                self.logger.error(f"{self.log_prefix}: {err_msg}")
+                return ValidationResult(success=False, message=err_msg)
+
+        elif action_value == "isolate_remediate_action":
+            if action.parameters.get("action") not in [
+                "contain",
+                "lift_containment",
+                "hide_host",
+                "unhide_host",
+            ]:
+                err_msg = "Invalid action selected."
+                self.logger.error(f"{self.log_prefix}: {err_msg}")
+                return ValidationResult(success=False, message=err_msg)
+        """
+        return ValidationResult(success=True, message="Validation successful.")
