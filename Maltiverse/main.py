@@ -361,7 +361,7 @@ class MaltiversePlugin(PluginBase):
                 else:
                     skipped_ioc += 1
                     continue
-            if total_ioc_count % 10001 == 0:
+            if total_ioc_count % 10000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
                 self.logger.debug(f"Payload: {generated_payload}")
