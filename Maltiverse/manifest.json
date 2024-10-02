@@ -198,7 +198,7 @@
         ],
         "mandatory": true,
         "default":, ["low"],
-        "description": "Severity to assign any IOCs with Maltiverse classification of neutral"
+        "description": "Severity to assign any IOCs with Maltiverse classification of neutral
     }
   ]
 }
