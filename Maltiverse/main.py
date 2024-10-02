@@ -321,7 +321,7 @@ class MaltiversePlugin(PluginBase):
                         "description": indicator.comments,
                         "first_seen": indicator.firstSeen,
                         "last_seen": indicator.lastSeen,
-                        "source": indicator.source,
+                        "source": "Netskope Cloud Threat Exchange",
                     }
                 ]
             }
