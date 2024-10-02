@@ -360,6 +360,8 @@ class MaltiversePlugin(PluginBase):
                 else:
                     skipped_ioc += 1
                     continue
+
+            # Maltiverse recommends sending a limit of 10k elements
             if total_ioc_count % 10000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
