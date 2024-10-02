@@ -519,6 +519,7 @@ class MaltiversePlugin(PluginBase):
                 ):
                     return ValidationResult(
                         success=False,
-                        message="A severity can't be in two Maltiverse classifications at the same time.")
+                        message="A severity can't be in two Maltiverse classifications at the same time."
+                    )
 
         return ValidationResult(success=True, message="Validation successful.")
