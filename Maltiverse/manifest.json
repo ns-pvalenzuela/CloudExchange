@@ -145,10 +145,10 @@
               "value": "low",
               "key": "Low"
           }
+        ],
         "mandatory": true,
         "default":, "critical",
-        "description": "Severity to assign any IOCs with Maltiverse classification of malicious"
-      ]
+        "description": "Severity to assign any IOCs with Maltiverse classification of malicious
     },
     {
       "label": "Suspicious severity",
@@ -170,11 +170,11 @@
           {
               "value": "low",
               "key": "Low"
-          },
+          }
+        ],
         "mandatory": true,
         "default":, "medium",
         "description": "Severity to assign any IOCs with Maltiverse classification of suspicious"
-      ]
     },
     {
       "label": "Malicious severity",
@@ -196,11 +196,11 @@
           {
               "value": "low",
               "key": "Low"
-          },
+          }
+        ],
         "mandatory": true,
         "default":, "low",
         "description": "Severity to assign any IOCs with Maltiverse classification of neutral"
-      ]
     }
   ]
 }
