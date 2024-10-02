@@ -1,204 +1,198 @@
 {
-  "name": "Maltiverse",
-  "id": "maltiverse",
-  "version": "1.2.0",
-  "description": "This plugin is used to exchange IOCs with Maltiverse.",
-  "patch_supported": false,
-  "push_supported": true,
-  "configuration": [
-    {
-      "label": "API Key",
-      "key": "apikey",
-      "type": "password",
-      "mandatory": true,
-      "default": "",
-      "description": "Input the Maltiverse API Key."
-    },
-    {
-      "label": "Classifications",
-      "key": "classifications",
-      "type": "multichoice",
-      "choices": [
-        {
-          "value": "malicious",
-          "key": "Malicious"
-        },
-        {
-          "value": "suspicious",
-          "key": "Suspicious"
-        },
-        {
-          "value": "neutral",
-          "key": "Neutral"
-        }
-      ],
-      "mandatory": true,
-      "default": ["malicious"],
-      "description": "Which classifications to import."
-    },
-    {
-      "label": "Feeds",
-      "key": "feedids",
-      "type": "multichoice",
-      "choices": [
-          {
-              "value": "VdhZV34B4jHUXfKt_gDi",
-              "key": "Command and Controls"
-          },
-          {
-              "value": "ZtjCV34B4jHUXfKtjWdD",
-              "key": "Malware Distribution"
-          },
-          {
-              "value": "Ryjs1n0BGb1u75L8KpjZ",
-              "key": "TOR Nodes"
-          },
-          {
-              "value": "uYxZknEB8jmkCY9eQoUJ",
-              "key": "Malicious IP"
-          },
-          {
-              "value": "RbSs1YUBYAdeK0KL3rUf",
-              "key": "Advanced Persistent Threats"
-          },
-          {
-              "value": "kskDSoEB4jHUXfKtb4IZ",
-              "key": "Emotet"
-          },
-          {
-              "value": "EIAO4HAB8jmkCY9e8HoL",
-              "key": "Phishing"
-          },
-          {
-              "value": "WZ0XJHIB8jmkCY9eLpr0",
-              "key": "Malware"
-          },
-          {
-              "value": "xXPAOoUBqd_8q-E2ZH4Z",
-              "key": "Cobalt Strike"
-          },
-          {
-              "value": "04xeknEB8jmkCY9eOoUv",
-              "key": "Cybercrime"
-          },
-          {
-              "value": "H4yrknEB8jmkCY9eb4aN",
-              "key": "Malicious URL"
-          },
-          {
-              "value": "QthpV34B4jHUXfKtOw--",
-              "key": "Known Attackers"
-          },
-          {
-              "value": "xKWKangBN4Q8MD8oRYd-",
-              "key": "Malicious Hostvalues"
-          },
-          {
-              "value": "3DyIvYAB4jHUXfKt9SQL",
-              "key": "IoT"
-          },
-          {
-              "value": "VFveEXsBGb1u75L8tCaY",
-              "key": "Industrial Control Systems"
-          }
-      ],
-      "mandatory": false,
-      "default": [
-        "VdhZV34B4jHUXfKt_gDi",
-        "EIAO4HAB8jmkCY9e8HoL",
-        "ZtjCV34B4jHUXfKtjWdD",
-        "04xeknEB8jmkCY9eOoUv",
-        "H4yrknEB8jmkCY9eb4aN",
-        "uYxZknEB8jmkCY9eQoUJ",
-        "xKWKangBN4Q8MD8oRYd-"
-        ],
-      "description": "Select the Feeds to import."
-    },
-    {
-      "label": "Other Feeds",
-      "key": "otherfeeds",
-      "type": "text",
-      "mandatory": false,
-      "default": [],
-      "description": "Comma Separated list of other feeds ids to import."
-    },
-    {
-      "label": "Malicious severity",
-      "key": "malicious_severity",
-      "type": "choice",
-      "choices": [
-          {
-              "value": "critical",
-              "key": "Critical"
-          },
-          {
-              "value": "high",
-              "key": "High"
-          },
-          {
-              "value": "medium",
-              "key": "Medium"
-          },
-          {
-              "value": "low",
-              "key": "Low"
-          }
-        ],
-        "mandatory": true,
-        "default":, ["critical"],
-        "description": "Severity to assign any IOCs with Maltiverse classification of malicious"
-    },
-    {
-      "label": "Suspicious severity",
-      "key": "suspicious_severity",
-      "type": "choice",
-      "choices": [
-          {
-              "value": "critical",
-              "key": "Critical"
-          },
-          {
-              "value": "high",
-              "key": "High"
-          },
-          {
-              "value": "medium",
-              "key": "Medium"
-          },
-          {
-              "value": "low",
-              "key": "Low"
-          }
-        ],
-        "mandatory": true,
-        "default":, ["medium"],
-        "description": "Severity to assign any IOCs with Maltiverse classification of suspicious"
-    },
-    {
-      "label": "Neutral severity",
-      "key": "neutral_severity",
-      "type": "choice",
-      "choices": [
-          {
-              "value": "critical",
-              "key": "Critical"
-          },
-          {
-              "value": "high",
-              "key": "High"
-          },
-          {
-              "value": "medium",
-              "key": "Medium"
-          },
-          {
-              "value": "low",
-              "key": "Low"
-          }
-        ],
-        "mandatory": true,
-        "default":, ["low"],
-        "description": "Severity to assign any IOCs with Maltiverse classification of neutral"
-    }
-  ]
+	"name": "Maltiverse",
+	"id": "maltiverse",
+	"version": "1.2.0",
+	"description": "This plugin is used to exchange IOCs with Maltiverse.",
+	"patch_supported": false,
+	"push_supported": true,
+	"configuration": [{
+			"label": "API Key",
+			"key": "apikey",
+			"type": "password",
+			"mandatory": true,
+			"default": "",
+			"description": "Input the Maltiverse API Key."
+		},
+		{
+			"label": "Classifications",
+			"key": "classifications",
+			"type": "multichoice",
+			"choices": [{
+					"value": "malicious",
+					"key": "Malicious"
+				},
+				{
+					"value": "suspicious",
+					"key": "Suspicious"
+				},
+				{
+					"value": "neutral",
+					"key": "Neutral"
+				}
+			],
+			"mandatory": true,
+			"default": ["malicious"],
+			"description": "Which classifications to import."
+		},
+		{
+			"label": "Feeds",
+			"key": "feedids",
+			"type": "multichoice",
+			"choices": [{
+					"value": "VdhZV34B4jHUXfKt_gDi",
+					"key": "Command and Controls"
+				},
+				{
+					"value": "ZtjCV34B4jHUXfKtjWdD",
+					"key": "Malware Distribution"
+				},
+				{
+					"value": "Ryjs1n0BGb1u75L8KpjZ",
+					"key": "TOR Nodes"
+				},
+				{
+					"value": "uYxZknEB8jmkCY9eQoUJ",
+					"key": "Malicious IP"
+				},
+				{
+					"value": "RbSs1YUBYAdeK0KL3rUf",
+					"key": "Advanced Persistent Threats"
+				},
+				{
+					"value": "kskDSoEB4jHUXfKtb4IZ",
+					"key": "Emotet"
+				},
+				{
+					"value": "EIAO4HAB8jmkCY9e8HoL",
+					"key": "Phishing"
+				},
+				{
+					"value": "WZ0XJHIB8jmkCY9eLpr0",
+					"key": "Malware"
+				},
+				{
+					"value": "xXPAOoUBqd_8q-E2ZH4Z",
+					"key": "Cobalt Strike"
+				},
+				{
+					"value": "04xeknEB8jmkCY9eOoUv",
+					"key": "Cybercrime"
+				},
+				{
+					"value": "H4yrknEB8jmkCY9eb4aN",
+					"key": "Malicious URL"
+				},
+				{
+					"value": "QthpV34B4jHUXfKtOw--",
+					"key": "Known Attackers"
+				},
+				{
+					"value": "xKWKangBN4Q8MD8oRYd-",
+					"key": "Malicious Hostvalues"
+				},
+				{
+					"value": "3DyIvYAB4jHUXfKt9SQL",
+					"key": "IoT"
+				},
+				{
+					"value": "VFveEXsBGb1u75L8tCaY",
+					"key": "Industrial Control Systems"
+				}
+			],
+			"mandatory": false,
+			"default": [
+				"VdhZV34B4jHUXfKt_gDi",
+				"EIAO4HAB8jmkCY9e8HoL",
+				"ZtjCV34B4jHUXfKtjWdD",
+				"04xeknEB8jmkCY9eOoUv",
+				"H4yrknEB8jmkCY9eb4aN",
+				"uYxZknEB8jmkCY9eQoUJ",
+				"xKWKangBN4Q8MD8oRYd-"
+			],
+			"description": "Select the Feeds to import."
+		},
+		{
+			"label": "Other Feeds",
+			"key": "otherfeeds",
+			"type": "text",
+			"mandatory": false,
+			"default": [],
+			"description": "Comma Separated list of other feeds ids to import."
+		},
+		{
+			"label": "Malicious severity",
+			"key": "malicious_severity",
+			"type": "choice",
+			"choices": [{
+					"value": "critical",
+					"key": "Critical"
+				},
+				{
+					"value": "high",
+					"key": "High"
+				},
+				{
+					"value": "medium",
+					"key": "Medium"
+				},
+				{
+					"value": "low",
+					"key": "Low"
+				}
+			],
+			"mandatory": true,
+			"default": ["critical"],
+			"description": "Severity to assign any IOCs with Maltiverse classification of malicious"
+		},
+		{
+			"label": "Suspicious severity",
+			"key": "suspicious_severity",
+			"type": "choice",
+			"choices": [{
+					"value": "critical",
+					"key": "Critical"
+				},
+				{
+					"value": "high",
+					"key": "High"
+				},
+				{
+					"value": "medium",
+					"key": "Medium"
+				},
+				{
+					"value": "low",
+					"key": "Low"
+				}
+			],
+			"mandatory": true,
+			"default": ["medium"],
+			"description": "Severity to assign any IOCs with Maltiverse classification of suspicious"
+		},
+		{
+			"label": "Neutral severity",
+			"key": "neutral_severity",
+			"type": "choice",
+			"choices": [{
+					"value": "critical",
+					"key": "Critical"
+				},
+				{
+					"value": "high",
+					"key": "High"
+				},
+				{
+					"value": "medium",
+					"key": "Medium"
+				},
+				{
+					"value": "low",
+					"key": "Low"
+				}
+			],
+			"mandatory": true,
+			"default": ["low"],
+			"description": "Severity to assign any IOCs with Maltiverse classification of neutral"
+		}
+	]
 }
