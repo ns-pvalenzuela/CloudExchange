@@ -343,11 +343,7 @@ class MaltiversePlugin(PluginBase):
             elif indicator.type == IndicatorType.MD5:
                 ioc_payload.update({"type": "sample", "md5": ioc_value})
             else:
-                if ipaddress.IPv4Address(ioc_value):
-                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
-                elif ipaddress.IPv6Address(ioc_value):
-                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
-                elif '/' in ioc_value:
+                if '/' in ioc_value:
                     ioc_payload.update({"type": "url", "url": ioc_value})
                 elif re.match(
                         r"^(?!.{255}|.{253}[^.])([a-z0-9](?:[-a-z-0-9]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?[.]?$",
@@ -356,6 +352,12 @@ class MaltiversePlugin(PluginBase):
                         re.IGNORECASE,
                 ):
                     ioc_payload.update({"type": "hostname", "domain": ioc_value})
+                elif ipaddress.IPv4Address(ioc_value):
+                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
+                elif ipaddress.IPv6Address(ioc_value):
+                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
+                elif '/' in ioc_value:
+                    ioc_payload.update({"type": "url", "url": ioc_value})
                 else:
                     skipped_ioc += 1
                     continue
