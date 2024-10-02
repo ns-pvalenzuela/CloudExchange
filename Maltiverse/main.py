@@ -217,12 +217,14 @@ class MaltiversePlugin(PluginBase):
                     )
                 )
                 continue
+
+            malicious_severity, suspicious_severity, neutral_severity = self._severity_convert
             if registry['classification'] == 'malicious':
-                current_risk = self.configuration.get("malicious_severity", "value")
+                current_risk = malicious_severity
             elif registry['classification'] == 'suspicious':
-                current_risk = self.configuration.get("suspicious_severity", "value")
+                current_risk = suspicious_severity
             elif registry['classification'] == 'neutral':
-                current_risk = self.configuration.get("neutral_severity", "value")
+                current_risk = neutral_severity
             else:
                 current_risk = SeverityType.UNKNOWN
 
@@ -236,6 +238,36 @@ class MaltiversePlugin(PluginBase):
             indicator_count += 1
 
         return indicators, indicator_count
+
+    def _severity_convert(self):
+        if self.configuration.get("malicious_severity", "value") == "critical":
+            malicious_severity = SeverityType.CRITICAL
+        elif self.configuration.get("malicious_severity", "value") == "high":
+            malicious_severity = SeverityType.HIGH
+        elif self.configuration.get("malicious_severity", "value") == "medium":
+            malicious_severity = SeverityType.MEDIUM
+        else:
+            malicious_severity = SeverityType.LOW
+
+        if self.configuration.get("suspicious_severity", "value") == "critical":
+            suspicious_severity = SeverityType.CRITICAL
+        elif self.configuration.get("suspicious_severity", "value") == "high":
+            suspicious_severity = SeverityType.HIGH
+        elif self.configuration.get("suspicious_severity", "value") == "medium":
+            suspicious_severity = SeverityType.MEDIUM
+        else:
+            suspicious_severity = SeverityType.LOW
+
+        if self.configuration.get("neutral_severity", "value") == "critical":
+            neutral_severity = SeverityType.CRITICAL
+        elif self.configuration.get("neutral_severity", "value") == "high":
+            neutral_severity = SeverityType.HIGH
+        elif self.configuration.get("neutral_severity", "value") == "medium":
+            neutral_severity = SeverityType.MEDIUM
+        else:
+            neutral_severity = SeverityType.LOW
+
+        return malicious_severity, suspicious_severity, neutral_severity
 
     def validate(self, configuration) -> ValidationResult:
         """Validate the Plugin configuration parameters.
@@ -341,7 +373,7 @@ class MaltiversePlugin(PluginBase):
                         headers={"accept": "application/json",
                                  "Authorization": f"Bearer {self.configuration['apikey']}"
                                  },
-                        #json=generated_payload
+                        json=generated_payload
                     )
 
                     self.logger.debug(

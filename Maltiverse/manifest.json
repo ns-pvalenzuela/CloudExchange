@@ -130,23 +130,23 @@
       "type": "choice",
       "choices": [
           {
-              "value": SeverityType.CRITICAL,
+              "value": "critical",
               "key": "Critical"
           },
           {
-              "value": SeverityType.HIGH,
+              "value": "high",
               "key": "High"
           },
           {
-              "value": SeverityType.MEDIUM,
+              "value": "medium",
               "key": "Medium"
           },
           {
-              "value": SeverityType.LOW,
+              "value": "low",
               "key": "Low"
           }
         "mandatory": true,
-        "default":, SeverityType.CRITICAL,
+        "default":, "critical",
         "description": "Severity to assign any IOCs with Maltiverse classification of malicious"
       ]
     },
@@ -156,23 +156,23 @@
       "type": "choice",
       "choices": [
           {
-              "value": SeverityType.CRITICAL,
+              "value": "critical",
               "key": "Critical"
           },
           {
-              "value": SeverityType.HIGH,
+              "value": "high",
               "key": "High"
           },
           {
-              "value": SeverityType.MEDIUM,
+              "value": "medium",
               "key": "Medium"
           },
           {
-              "value": SeverityType.LOW,
+              "value": "low",
               "key": "Low"
-          }
+          },
         "mandatory": true,
-        "default":, SeverityType.MEDIUM,
+        "default":, "medium",
         "description": "Severity to assign any IOCs with Maltiverse classification of suspicious"
       ]
     },
@@ -182,23 +182,23 @@
       "type": "choice",
       "choices": [
           {
-              "value": SeverityType.CRITICAL,
+              "value": "critical",
               "key": "Critical"
           },
           {
-              "value": SeverityType.HIGH,
+              "value": "high",
               "key": "High"
           },
           {
-              "value": SeverityType.MEDIUM,
+              "value": "medium",
               "key": "Medium"
           },
           {
-              "value": SeverityType.LOW,
+              "value": "low",
               "key": "Low"
-          }
+          },
         "mandatory": true,
-        "default":, SeverityType.LOW,
+        "default":, "low",
         "description": "Severity to assign any IOCs with Maltiverse classification of neutral"
       ]
     }
