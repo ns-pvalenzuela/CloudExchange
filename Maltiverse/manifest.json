@@ -147,7 +147,7 @@
           }
         ],
         "mandatory": true,
-        "default":, "critical",
+        "default":, ["critical"],
         "description": "Severity to assign any IOCs with Maltiverse classification of malicious
     },
     {
@@ -173,7 +173,7 @@
           }
         ],
         "mandatory": true,
-        "default":, "medium",
+        "default":, ["medium"],
         "description": "Severity to assign any IOCs with Maltiverse classification of suspicious"
     },
     {
@@ -199,7 +199,7 @@
           }
         ],
         "mandatory": true,
-        "default":, "low",
+        "default":, ["low"],
         "description": "Severity to assign any IOCs with Maltiverse classification of neutral"
     }
   ]
