@@ -509,7 +509,7 @@ class MaltiversePlugin(PluginBase):
             ]
 
     def validate_action(self, action: Action) -> ValidationResult:
-        action_params = action.get("parameters", {})
+        action_params = action.parameters
         for list_malicious in action_params.get("malicious", []):
             for list_suspicious in action_params.get("suspicious", []):
                 if (
