@@ -55,7 +55,6 @@ from .utils.maltiverse_constants import (
     MODULE_NAME,
     PLATFORM_NAME,
     PLUGIN_VERSION,
-    CHUNK_SIZE,
 )
 
 from .utils.maltiverse_helper import (
