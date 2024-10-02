@@ -218,7 +218,7 @@ class MaltiversePlugin(PluginBase):
                 )
                 continue
 
-            malicious_severity, suspicious_severity, neutral_severity = self._severity_convert
+            malicious_severity, suspicious_severity, neutral_severity = self._severity_convert()
             if registry['classification'] == 'malicious':
                 current_risk = malicious_severity
             elif registry['classification'] == 'suspicious':
@@ -239,7 +239,7 @@ class MaltiversePlugin(PluginBase):
 
         return indicators, indicator_count
 
-    def _severity_convert(self):
+    def _severity_convert(self) -> Tuple:
         if self.configuration.get("malicious_severity", "value") == "critical":
             malicious_severity = SeverityType.CRITICAL
         elif self.configuration.get("malicious_severity", "value") == "high":
