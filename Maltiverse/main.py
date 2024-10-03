@@ -317,10 +317,10 @@ class MaltiversePlugin(PluginBase):
             first_seen=indicator.firstSeen
             last_seen=indicator.lastSeen
 
-            ioc_payload = ('[{"blacklist": [{"description": ' +
-                           indicator.comments + ',"first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
+            ioc_payload = ('[{"blacklist": [{"description": "' +
+                           indicator.comments + '","first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
                            '","last_seen": "' + last_seen.strftime("%Y-%m-%d %H:%M:%S") +
-                           '","source": "Netskope Cloud Threat Exchange",}]')
+                           '","source": "Netskope Cloud Threat Exchange"}]')
 
             action_params = action_dict.get("parameters", {})
             if indicator.severity in action_params.get("malicious", []):
@@ -394,8 +394,8 @@ class MaltiversePlugin(PluginBase):
                 generated_payload = ''
             else:
                 if generated_payload:
-                    generated_payload +=','
-                generated_payload +=ioc_payload
+                    generated_payload += ','
+                generated_payload += ioc_payload
 
         log_msg = (
             f"{self.log_prefix}: Successfully pushed "
