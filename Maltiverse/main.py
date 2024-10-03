@@ -363,7 +363,7 @@ class MaltiversePlugin(PluginBase):
             if total_ioc_count % 10000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
-                generated_payload += ']'
+                json_payload = json.loads(generated_payload + ']')
                 self.logger.debug(f"Payload: {generated_payload}")
                 try:
                     self.maltiverse_helper.api_helper(
@@ -375,7 +375,7 @@ class MaltiversePlugin(PluginBase):
                         headers={"accept": "application/json",
                                  "Authorization": f"Bearer {self.configuration['apikey']}"
                                  },
-                        json=json.loads(generated_payload)
+                        json=json_payload
                     )
 
                     self.logger.debug(
