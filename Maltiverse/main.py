@@ -317,8 +317,10 @@ class MaltiversePlugin(PluginBase):
             first_seen=indicator.firstSeen
             last_seen=indicator.lastSeen
 
-            ioc_payload = ('{"blacklist": [{"description": "' +
-                           indicator.comments + '","first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
+            ioc_payload = '{"blacklist": [{'
+            if indicator.comments:
+                ioc_payload += '"description": "' + indicator.comments + '",'
+            ioc_payload +=('"first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
                            '","last_seen": "' + last_seen.strftime("%Y-%m-%d %H:%M:%S") +
                            '","source": "Netskope Cloud Threat Exchange"}]')
 
@@ -366,7 +368,7 @@ class MaltiversePlugin(PluginBase):
                 self.logger.debug(f"Payload: {generated_payload}")
                 try:
                     self.maltiverse_helper.api_helper(
-                        url="http://api.maltiverse.com/bulk",
+                        url="https://api.maltiverse.com/bulk",
                         method="POST",
                         verify=self.ssl_validation,
                         proxies=self.proxy,
