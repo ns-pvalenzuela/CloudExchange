@@ -33,6 +33,7 @@ CTE Maltiverse Plugin.
 """
 import traceback, json, ipaddress, re
 from typing import Dict, List, Tuple
+from datetime import datetime
 
 from netskope.integrations.cte.models import (
     Indicator,
@@ -313,10 +314,13 @@ class MaltiversePlugin(PluginBase):
 
         for indicator in indicators:
             total_ioc_count += 1
+            first_seen=indicator.firstSeen
+            last_seen=indicator.lastSeen
 
             ioc_payload = ('[{"blacklist": [{"description": ' +
-                           indicator.comments + ',"first_seen": ' + indicator.firstSeen + ',"last_seen": ' +
-                           indicator.lastSeen + ',"source": "Netskope Cloud Threat Exchange",}]')
+                           indicator.comments + ',"first_seen": ' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
+                           ',"last_seen": ' + last_seen.strftime("%Y-%m-%d %H:%M:%S") +
+                           ',"source": "Netskope Cloud Threat Exchange",}]')
 
             action_params = action_dict.get("parameters", {})
             if indicator.severity in action_params.get("malicious", []):
