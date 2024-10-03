@@ -317,7 +317,7 @@ class MaltiversePlugin(PluginBase):
             first_seen=indicator.firstSeen
             last_seen=indicator.lastSeen
 
-            ioc_payload = ('[{"blacklist": [{"description": "' +
+            ioc_payload = ('{"blacklist": [{"description": "' +
                            indicator.comments + '","first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
                            '","last_seen": "' + last_seen.strftime("%Y-%m-%d %H:%M:%S") +
                            '","source": "Netskope Cloud Threat Exchange"}]')
@@ -363,8 +363,6 @@ class MaltiversePlugin(PluginBase):
             if total_ioc_count % 10000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
-                sys.setrecursionlimit(10000)
-                json_payload = json.loads(generated_payload + ']')
                 self.logger.debug(f"Payload: {generated_payload}")
                 try:
                     self.maltiverse_helper.api_helper(
@@ -392,11 +390,9 @@ class MaltiversePlugin(PluginBase):
                         details=str(traceback.format_exc()),
                     )
                     raise exp
-                generated_payload = ''
+                generated_payload = {}
             else:
-                if generated_payload:
-                    generated_payload += ','
-                generated_payload += ioc_payload
+                generated_payload.update(json.loads(ioc_payload))
 
         log_msg = (
             f"{self.log_prefix}: Successfully pushed "
