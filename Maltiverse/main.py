@@ -374,7 +374,7 @@ class MaltiversePlugin(PluginBase):
                         headers={"accept": "application/json",
                                  "Authorization": f"Bearer {self.configuration['apikey']}"
                                  },
-                        json=json_payload
+                        json=generated_payload
                     )
 
                     self.logger.debug(
