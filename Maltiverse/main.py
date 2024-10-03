@@ -363,6 +363,7 @@ class MaltiversePlugin(PluginBase):
             if total_ioc_count % 10000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
+                sys.setrecursionlimit(10000)
                 json_payload = json.loads(generated_payload + ']')
                 self.logger.debug(f"Payload: {generated_payload}")
                 try:
