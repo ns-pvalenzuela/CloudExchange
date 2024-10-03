@@ -308,7 +308,7 @@ class MaltiversePlugin(PluginBase):
 
         # Step-1
         # Convert IOCs to Maltiverse format
-        generated_payload = {}
+        generated_payload = []
         total_ioc_count = 0
         skipped_ioc = 0
 
