@@ -308,7 +308,7 @@ class MaltiversePlugin(PluginBase):
 
         # Step-1
         # Convert IOCs to Maltiverse format
-        generated_payload = ''
+        generated_payload = {}
         total_ioc_count = 0
         skipped_ioc = 0
 
@@ -347,7 +347,7 @@ class MaltiversePlugin(PluginBase):
                         ioc_value,
                         re.IGNORECASE,
                 ):
-                    ioc_payload += ',"type": "hostname", "domain": "'+ ioc_value + '"'
+                    ioc_payload += ',"type": "hostname", "domain": "' + ioc_value + '"'
                 elif ipaddress.IPv4Address(ioc_value):
                     ioc_payload += ',"type": "ip", "ip_addr": "' + ioc_value + '"'
                 elif ipaddress.IPv6Address(ioc_value):
@@ -408,7 +408,6 @@ class MaltiversePlugin(PluginBase):
         Returns:
         List[ActionWithoutParams]: List of ActionWithoutParams objects that are supported by the plugin.
         """
-
         return [
             ActionWithoutParams(label="Send IOCs", value="send"),
         ]
