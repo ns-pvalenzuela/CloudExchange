@@ -318,9 +318,9 @@ class MaltiversePlugin(PluginBase):
             last_seen=indicator.lastSeen
 
             ioc_payload = ('[{"blacklist": [{"description": ' +
-                           indicator.comments + ',"first_seen": ' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
-                           ',"last_seen": ' + last_seen.strftime("%Y-%m-%d %H:%M:%S") +
-                           ',"source": "Netskope Cloud Threat Exchange",}]')
+                           indicator.comments + ',"first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
+                           '","last_seen": "' + last_seen.strftime("%Y-%m-%d %H:%M:%S") +
+                           '","source": "Netskope Cloud Threat Exchange",}]')
 
             action_params = action_dict.get("parameters", {})
             if indicator.severity in action_params.get("malicious", []):
@@ -335,25 +335,25 @@ class MaltiversePlugin(PluginBase):
 
             ioc_value = indicator.value.lower()
             if indicator.type == IndicatorType.SHA256:
-                ioc_payload += ',"type": "sample", "sha256": ' + ioc_value
+                ioc_payload += ',"type": "sample", "sha256": "' + ioc_value + '"'
             elif indicator.type == IndicatorType.MD5:
-                ioc_payload += ',"type": "sample", "md5": ' + ioc_value
+                ioc_payload += ',"type": "sample", "md5": "' + ioc_value + '"'
             else:
                 if '/' in ioc_value:
-                    ioc_payload += ',"type": "url", "url": ' + ioc_value
+                    ioc_payload += ',"type": "url", "url": "' + ioc_value + '"'
                 elif re.match(
                         r"^(?!.{255}|.{253}[^.])([a-z0-9](?:[-a-z-0-9]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?[.]?$",
                         # noqa
                         ioc_value,
                         re.IGNORECASE,
                 ):
-                    ioc_payload += ',"type": "hostname", "domain": '+ ioc_value
+                    ioc_payload += ',"type": "hostname", "domain": "'+ ioc_value + '"'
                 elif ipaddress.IPv4Address(ioc_value):
-                    ioc_payload += ',"type": "ip", "ip_addr": ' + ioc_value
+                    ioc_payload += ',"type": "ip", "ip_addr": "' + ioc_value + '"'
                 elif ipaddress.IPv6Address(ioc_value):
-                    ioc_payload += ',"type": "ip", "ip_addr": ' + ioc_value
+                    ioc_payload += ',"type": "ip", "ip_addr": "' + ioc_value + '"'
                 elif '/' in ioc_value:
-                    ioc_payload += ',"type": "url", "url": ' + ioc_value
+                    ioc_payload += ',"type": "url", "url": "' + ioc_value + '"'
                 else:
                     skipped_ioc += 1
                     continue
