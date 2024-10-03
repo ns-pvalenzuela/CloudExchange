@@ -307,64 +307,59 @@ class MaltiversePlugin(PluginBase):
 
         # Step-1
         # Convert IOCs to Maltiverse format
-        generated_payload = {}
+        generated_payload = ''
         total_ioc_count = 0
         skipped_ioc = 0
 
         for indicator in indicators:
             total_ioc_count += 1
 
-            ioc_payload = {
-                "blacklist": [
-                    {
-                        "description": indicator.comments,
-                        "first_seen": indicator.firstSeen,
-                        "last_seen": indicator.lastSeen,
-                        "source": "Netskope Cloud Threat Exchange",
-                    }
-                ]
-            }
+            ioc_payload = ('[{"blacklist": [{"description": ' +
+                           indicator.comments + ',"first_seen": ' + indicator.firstSeen + ',"last_seen": ' +
+                           indicator.lastSeen + ',"source": "Netskope Cloud Threat Exchange",}]')
 
             action_params = action_dict.get("parameters", {})
             if indicator.severity in action_params.get("malicious", []):
-                ioc_payload.update({"classification": "malicious"})
+                ioc_payload += ',"classification": "malicious"'
             elif indicator.severity in action_params.get("suspicious", []):
-                ioc_payload.update({"classification": "suspicious"})
+                ioc_payload += ',"classification": "suspicious"'
             elif indicator.severity in action_params.get("neutral", []):
-                ioc_payload.update({"classification": "neutral"})
+                ioc_payload += ',"classification": "neutral"'
             else:
                 skipped_ioc += 1
                 continue
 
             ioc_value = indicator.value.lower()
             if indicator.type == IndicatorType.SHA256:
-                ioc_payload.update({"type": "sample", "sha256": ioc_value})
+                ioc_payload += ',"type": "sample", "sha256": ' + ioc_value
             elif indicator.type == IndicatorType.MD5:
-                ioc_payload.update({"type": "sample", "md5": ioc_value})
+                ioc_payload += ',"type": "sample", "md5": ' + ioc_value
             else:
                 if '/' in ioc_value:
-                    ioc_payload.update({"type": "url", "url": ioc_value})
+                    ioc_payload += ',"type": "url", "url": ' + ioc_value
                 elif re.match(
                         r"^(?!.{255}|.{253}[^.])([a-z0-9](?:[-a-z-0-9]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?[.]?$",
                         # noqa
                         ioc_value,
                         re.IGNORECASE,
                 ):
-                    ioc_payload.update({"type": "hostname", "domain": ioc_value})
+                    ioc_payload += ',"type": "hostname", "domain": '+ ioc_value
                 elif ipaddress.IPv4Address(ioc_value):
-                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
+                    ioc_payload += ',"type": "ip", "ip_addr": ' + ioc_value
                 elif ipaddress.IPv6Address(ioc_value):
-                    ioc_payload.update({"type": "ip", "ip_addr": ioc_value})
+                    ioc_payload += ',"type": "ip", "ip_addr": ' + ioc_value
                 elif '/' in ioc_value:
-                    ioc_payload.update({"type": "url", "url": ioc_value})
+                    ioc_payload += ',"type": "url", "url": ' + ioc_value
                 else:
                     skipped_ioc += 1
                     continue
+            ioc_payload += '}'
 
             # Maltiverse recommends sending a limit of 10k elements
             if total_ioc_count % 10000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
+                generated_payload += ']'
                 self.logger.debug(f"Payload: {generated_payload}")
                 try:
                     self.maltiverse_helper.api_helper(
@@ -376,7 +371,7 @@ class MaltiversePlugin(PluginBase):
                         headers={"accept": "application/json",
                                  "Authorization": f"Bearer {self.configuration['apikey']}"
                                  },
-                        json=generated_payload
+                        json=json.loads(generated_payload)
                     )
 
                     self.logger.debug(
@@ -392,9 +387,11 @@ class MaltiversePlugin(PluginBase):
                         details=str(traceback.format_exc()),
                     )
                     raise exp
-                generated_payload = {}
+                generated_payload = ''
             else:
-                generated_payload.update(ioc_payload)
+                if generated_payload:
+                    generated_payload +=','
+                generated_payload +=ioc_payload
 
         log_msg = (
             f"{self.log_prefix}: Successfully pushed "
