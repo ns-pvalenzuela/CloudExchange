@@ -365,7 +365,6 @@ class MaltiversePlugin(PluginBase):
             if total_ioc_count % 5000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
-                # self.logger.debug(f"Payload: {json.dumps(generated_payload)}")
                 try:
                     self.maltiverse_helper.api_helper(
                         url="https://api.maltiverse.com/bulk",
