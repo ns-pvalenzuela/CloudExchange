@@ -1,0 +1,28 @@
+{
+    "name": "Recorded Future Identity",
+    "description": "Fetch infections from malware stealers on pcs containing corporate credentials and lower their user confidence store on every infection",
+    "id": "recorded_future_cre",
+    "type": [
+        "user"
+    ],
+    "netskope": false,
+    "version": "1.0.0",
+    "configuration": [
+        {
+            "label": "API Key",
+            "key": "api_key",
+            "type": "password",
+            "default": "",
+            "mandatory": true,
+            "description": "Api Key from Recorded Future Identity Intelligence."
+        },
+        {
+            "label": "Domain Names",
+            "key": "domains",
+            "type": "text",
+            "default": "",
+            "mandatory": true,
+            "description": "Comma-separated corporate domain list to search"
+        }
+    ]
+}
