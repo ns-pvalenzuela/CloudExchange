@@ -115,7 +115,7 @@ class ProofpointPlugin(PluginBase):
         return res
 
     def fetch_scores(self, res):
-        """Fetch user scores."""
+        """Fetch exfiltrations."""
         scored_users = []
         score_users = {}
         try:
