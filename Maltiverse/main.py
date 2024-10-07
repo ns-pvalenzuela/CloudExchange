@@ -348,7 +348,7 @@ class MaltiversePlugin(PluginBase):
                         ioc_value,
                         re.IGNORECASE,
                 ):
-                    ioc_payload += ',"type": "hostname", "domain": "' + ioc_value + '"'
+                    ioc_payload += ',"type": "hostname", "hostname": "' + ioc_value + '"'
                 elif ipaddress.IPv4Address(ioc_value):
                     ioc_payload += ',"type": "ip", "ip_addr": "' + ioc_value + '"'
                 elif ipaddress.IPv6Address(ioc_value):
