@@ -317,9 +317,12 @@ class MaltiversePlugin(PluginBase):
             first_seen=indicator.firstSeen
             last_seen=indicator.lastSeen
 
-            ioc_payload = ('{"blacklist": [{' +
-                           '"description": "malicious sample indicator from Netskope Cloud Threat Exchange"' +
-                           ',"first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
+            ioc_payload = '{"blacklist": [{'
+            if indicator.description:
+                ioc_payload += '"description": "' + indicator.description + '"'
+            else:
+                ioc_payload += '"description": "malicious sample indicator from Netskope Cloud Threat Exchange"'
+            ioc_payload += (',"first_seen": "' + first_seen.strftime("%Y-%m-%d %H:%M:%S") +
                            '","last_seen": "' + last_seen.strftime("%Y-%m-%d %H:%M:%S") +
                            '","source": "Netskope Cloud Threat Exchange"}]')
 
