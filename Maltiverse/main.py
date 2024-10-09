@@ -346,7 +346,6 @@ class MaltiversePlugin(PluginBase):
                     ioc_payload += ',"type": "url", "url": "' + ioc_value + '"'
                 elif re.match(
                         r"^(?!.{255}|.{253}[^.])([a-z0-9](?:[-a-z-0-9]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[-a-z0-9]{0,61}[a-z0-9])?[.]?$",
-                        # noqa
                         ioc_value,
                         re.IGNORECASE,
                 ):
@@ -355,8 +354,6 @@ class MaltiversePlugin(PluginBase):
                     ioc_payload += ',"type": "ip", "ip_addr": "' + ioc_value + '"'
                 elif ipaddress.IPv6Address(ioc_value):
                     ioc_payload += ',"type": "ip", "ip_addr": "' + ioc_value + '"'
-                elif '/' in ioc_value:
-                    ioc_payload += ',"type": "url", "url": "' + ioc_value + '"'
                 else:
                     skipped_ioc += 1
                     continue
