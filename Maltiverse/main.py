@@ -306,7 +306,6 @@ class MaltiversePlugin(PluginBase):
             flag and Push result message.
         """
 
-        # Step-1
         # Convert IOCs to Maltiverse format
         generated_payload = []
         total_ioc_count = 0
@@ -365,7 +364,6 @@ class MaltiversePlugin(PluginBase):
 
             # Multiple requests with a maximum element limit
             if total_ioc_count % 7000 == 0:
-                # Step-2
                 # Share indicators with Maltiverse.
                 try:
                     self.maltiverse_helper.api_helper(
