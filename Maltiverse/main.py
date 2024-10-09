@@ -363,7 +363,7 @@ class MaltiversePlugin(PluginBase):
                     continue
             ioc_payload += '}'
 
-            # Maltiverse recommends sending a limit of 10k elements
+            # Multiple requests with a maximum element limit
             if total_ioc_count % 7000 == 0:
                 # Step-2
                 # Share indicators with Maltiverse.
