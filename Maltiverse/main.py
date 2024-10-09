@@ -313,8 +313,8 @@ class MaltiversePlugin(PluginBase):
 
         for indicator in indicators:
             total_ioc_count += 1
-            first_seen=indicator.firstSeen
-            last_seen=indicator.lastSeen
+            first_seen = indicator.firstSeen
+            last_seen = indicator.lastSeen
 
             ioc_payload = '{"blacklist": [{'
             if indicator.description:
