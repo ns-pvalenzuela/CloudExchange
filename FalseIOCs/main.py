@@ -92,7 +92,7 @@ class FalseIOCsPlugin(PluginBase):
         for ioc_type in ioc_types:
             self.logger.info(
                 message=(
-                    "Value:" + self.configuration.get(ioc_type, "value")
+                    "Value:" + str(self.configuration.get(ioc_type, "value"))
                     )
                 )
             if self.configuration.get(ioc_type, "value") > 0:
