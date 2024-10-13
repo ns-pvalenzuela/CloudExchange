@@ -117,6 +117,7 @@ class FalseIOCsPlugin(PluginBase):
                             severity=SeverityType.HIGH
                         )
                     )
+
         return indicators
 
     def _get_data(self, ioc_type) -> tuple[str, str]:
