@@ -58,7 +58,7 @@ class FalseIOCsPlugin(PluginBase):
             **kwargs,
         )
         self.plugin_name, self.plugin_version = self._get_plugin_info()
-        self.log_prefix = f"{MODULE_NAME} {self.plugin_name}"
+        self.log_prefix = f"{self.plugin_name}"
         if name:
             self.log_prefix = f"{self.log_prefix} [{name}]"
         self.recorded_future_ioc_helper = RecordedFutureIOCPluginHelper(
