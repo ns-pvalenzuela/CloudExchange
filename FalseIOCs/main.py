@@ -124,7 +124,7 @@ class FalseIOCsPlugin(PluginBase):
         elif ioc_type == "md5":
             current_type = IndicatorType.MD5
             current_value = hashlib.md5(word.encode("utf")).hexdigest()
-        elif ioc_tyupe == "sha256":
+        elif ioc_type == "sha256":
             current_type = IndicatorType.SHA256
             current_value = hashlib.sha256(word.encode("utf")).hexdigest()
         elif ioc_type == "ipv4":
