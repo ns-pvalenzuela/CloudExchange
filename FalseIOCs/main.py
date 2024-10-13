@@ -105,8 +105,6 @@ class FalseIOCsPlugin(PluginBase):
         """Pull indicators from Recorded Future IOC plugin."""
         indicators = []
         ioc_types = ["urls", "hosts", "md5", "sha256", "ipv4", "ipv6"]
-        indicator_count = 0
-        headers = True
 
         for ioc_type in ioc_types:
             if self.configuration.get(ioc_type, "") > 0:
@@ -119,7 +117,6 @@ class FalseIOCsPlugin(PluginBase):
                             severity=SeverityType.HIGH
                         )
                     )
-
         return indicators
 
     def _get_data(self, ioc_type) -> tuple[str, str]:
