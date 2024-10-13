@@ -90,8 +90,13 @@ class FalseIOCsPlugin(PluginBase):
         ioc_types = ["urls", "hosts", "md5", "sha256", "ipv4", "ipv6"]
 
         for ioc_type in ioc_types:
-            if int(self.configuration.get(ioc_type, "value")) > 0:
-                for i in range(1,int(self.configuration.get(ioc_type, "value"))):
+            self.logger.info(
+                message=(
+                    "Value:" + self.configuration.get(ioc_type, "value")
+                    )
+                )
+            if self.configuration.get(ioc_type, "value") > 0:
+                for i in range(1,self.configuration.get(ioc_type, "value")):
                     current_type, current_value = self._get_data(self.configuration.get(ioc_type, "key"))
                     indicators.append(
                         Indicator(
