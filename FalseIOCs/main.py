@@ -61,12 +61,6 @@ class FalseIOCsPlugin(PluginBase):
         self.log_prefix = f"{self.plugin_name}"
         if name:
             self.log_prefix = f"{self.log_prefix} [{name}]"
-        self.recorded_future_ioc_helper = RecordedFutureIOCPluginHelper(
-            logger=self.logger,
-            log_prefix=self.log_prefix,
-            plugin_name=self.plugin_name,
-            plugin_version=self.plugin_version
-        )
 
     def _get_plugin_info(self) -> tuple:
         """Get plugin name and version from metadata.
