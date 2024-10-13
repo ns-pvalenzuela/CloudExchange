@@ -41,17 +41,6 @@ from netskope.integrations.cte.plugin_base import (
     ValidationResult,
 )
 
-from .utils.recorded_future_ioc_constants import (
-    MODULE_NAME,
-    PLATFORM_NAME,
-    PLUGIN_VERSION,
-)
-
-from .utils.recorded_future_ioc_helper import (
-    RecordedFutureIOCPluginException,
-    RecordedFutureIOCPluginHelper
-)
-
 
 class FalseIOCsPlugin(PluginBase):
     """False IOCs class template implementation."""
