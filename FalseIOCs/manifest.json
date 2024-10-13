@@ -9,7 +9,7 @@
     {
       "label": "Number of URLs",
       "key": "urls",
-      "type": "text",
+      "type": "number",
       "mandatory": true,
       "default": "0",
       "description": "Input the number of URLs to generate."
@@ -17,7 +17,7 @@
     {
       "label": "Number of Hosts",
       "key": "hosts",
-      "type": "text",
+      "type": "number",
       "mandatory": true,
       "default": "0",
       "description": "Input the number of Hosts to generate."
@@ -25,7 +25,7 @@
     {
       "label": "Number of MD5",
       "key": "md5",
-      "type": "text",
+      "type": "number",
       "mandatory": true,
       "default": "0",
       "description": "Input the number of md5 to generate."
@@ -33,7 +33,7 @@
     {
       "label": "Number of SHA256",
       "key": "SHA256",
-      "type": "text",
+      "type": "number",
       "mandatory": true,
       "default": "0",
       "description": "Input the number of SHA256 to generate."
@@ -41,7 +41,7 @@
     {
       "label": "Number of IPv4",
       "key": "ipv4",
-      "type": "text",
+      "type": "number",
       "mandatory": true,
       "default": "0",
       "description": "Input the number of IPv4 to generate."
@@ -49,7 +49,7 @@
     {
       "label": "Number of IPv6",
       "key": "ipv6",
-      "type": "text",
+      "type": "number",
       "mandatory": true,
       "default": "0",
       "description": "Input the number of IPv6 to generate."
