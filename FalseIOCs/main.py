@@ -92,7 +92,7 @@ class FalseIOCsPlugin(PluginBase):
         for ioc_type in ioc_types:
             if int(self.configuration.get(ioc_type, "value")) > 0:
                 for i in range(1,int(self.configuration.get(ioc_type, "value"))):
-                    current_type, current_value = self._get_data(self.configuration.get(ioc_type, "key"))
+                    current_type, current_value = self._get_data(ioc_type)
                     indicators.append(
                         Indicator(
                             value=current_value,
